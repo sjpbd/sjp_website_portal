@@ -1,0 +1,26 @@
+<!-- announcement/templates/announcement/post_news.html -->
+
+{% extends "users/userbase.html" %}
+{% block content %}
+<div class="container mx-auto mt-8">
+    <h1 class="text-3xl font-bold mb-4 text-center">Post News</h1>
+
+    <form method="post" class="bg-white p-4 rounded-lg shadow-md mx-auto max-w-md">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="id_title" class="block text-gray-700 font-semibold mb-2">Title:</label>
+            <!-- {{ form.title.label_tag }} -->
+            <input type="text" name="title" id="id_title" class="w-full border rounded-md px-4 py-2" value="{{ form.title.value|default:'' }}">
+        </div>
+        <div class="mb-4">
+            <label for="id_content" class="block text-gray-700 font-semibold mb-2">Content:</label>
+            <!-- {{ form.content.label_tag }} -->
+            <textarea name="content" id="id_content" class="w-full border rounded-md px-4 py-2 h-48">{{ form.content.value|default:'' }}</textarea>
+        </div>
+        
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full">Submit</button>
+    </form>
+
+    <a href="{% url 'announcement:announcement_feed' %}" class="text-blue-500 mt-4 block text-center">Back to News Feed</a>
+</div>
+{% endblock %}

@@ -1,0 +1,96 @@
+<!-- templates/newsnote/newsnote_list.html -->
+{% extends 'mainbase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 mt-14">
+    <h1 class="text-3xl font-bold mb-8">News Notes</h1>
+    
+    <!-- Search and Sort Form -->
+    <!-- <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+        <form hx-get="{% url 'newsnote:list' %}" 
+              hx-trigger="submit, change from:#sort-select"
+              hx-target="#newsnotes-container"
+              hx-push-url="true"
+              class="flex flex-wrap gap-4">
+            
+            <div class="flex-1">
+                <input type="text"
+                       name="search"
+                       value="{{ search_query }}"
+                       placeholder="Search newsletters..."
+                       class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       hx-trigger="keyup changed delay:500ms"
+                       hx-get="{% url 'newsnote:list' %}"
+                       hx-target="#newsnotes-container">
+            </div>
+            
+            <div class="w-48">
+                <select id="sort-select" 
+                        name="sort_by"
+                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="-published_date" {% if sort_by == '-published_date' %}selected{% endif %}>
+                        Newest First
+                    </option>
+                    <option value="published_date" {% if sort_by == 'published_date' %}selected{% endif %}>
+                        Oldest First
+                    </option>
+                    <option value="title" {% if sort_by == 'title' %}selected{% endif %}>
+                        Title A-Z
+                    </option>
+                    <option value="-title" {% if sort_by == '-title' %}selected{% endif %}>
+                        Title Z-A
+                    </option>
+                </select>
+            </div>
+        </form>
+    </div> -->
+
+    <!-- NewsNotes Grid -->
+    <div id="newsnotes-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {% for newsnote in newsnotes %}
+        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+            <a href="{% url 'newsnote:detail' newsnote.pk %}" class="block p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm text-gray-500">Issue: {{ newsnote.issue }}</span>
+                    <span class="text-sm text-gray-500">{{ newsnote.published_date|date:"M d, Y" }}</span>
+                </div>
+                <h2 class="text-xl font-semibold mb-2 text-gray-800">{{ newsnote.title }}</h2>
+                <div class="flex items-center text-blue-600">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    <span>Read Newsletter</span>
+                </div>
+            </a>
+        </div>
+        {% empty %}
+        <div class="col-span-full text-center py-12">
+            <p class="text-gray-500 text-lg">No newsletters found.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="flex justify-center mt-8">
+        <nav class="inline-flex rounded-md shadow">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}&search={{ search_query }}&sort_by={{ sort_by }}"
+               class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Previous
+            </a>
+            {% endif %}
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&search={{ search_query }}&sort_by={{ sort_by }}"
+               class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Next
+            </a>
+            {% endif %}
+        </nav>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'mainbase.html' %}
+{% load static %}
+{% block title %}General Leadership{% endblock %}
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<section class="font-sans bg-gray-100 py-16">
+    <div class="max-w-6xl mx-auto px-4">
+        <h1 class="text-4xl font-bold text-center mb-12 text-gray-800 relative">
+            Our General Leadership Team
+            <span class="block w-12 h-1 bg-gradient-to-r from-pink-400 to-purple-600 mt-4 mx-auto"></span>
+        </h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {% for member in general_leadership %}
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:-translate-y-1 hover:shadow-xl">
+                <div class="w-44 h-44 mx-auto mt-6 relative overflow-hidden rounded-full border-4 border-gray-200">
+                    <img src="{{ member.image.url }}" alt="{{ member.name }}" class="w-full h-full object-cover object-top">
+                </div>
+                <div class="p-4 text-center">
+                    <h2 class="text-xl font-semibold mb-1 text-gray-800">{{ member.name }}</h2>
+                    <p class="text-sm text-gray-500 mb-2 uppercase tracking-wide">{{ member.role }}</p>
+                    {% if show_email %}
+                    <p class="text-sm text-gray-600">
+                        <a href="mailto:{{ member.email }}" class="text-purple-600 hover:text-pink-400 transition-colors">{{ member.email }}</a>
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const members = document.querySelectorAll('.hover\:translate-y-1');
+        members.forEach(member => {
+            member.addEventListener('mouseenter', function() {
+                members.forEach(el => el.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    });
+</script>
+{% endblock %}

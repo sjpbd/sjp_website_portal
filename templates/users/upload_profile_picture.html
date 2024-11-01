@@ -1,0 +1,44 @@
+{% extends 'users/userbase.html' %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto py-8">
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Upload Profile Picture</h2>
+        <p class="text-gray-600 mb-6">Select a new profile picture to upload. Acceptable formats are JPEG, PNG, and GIF.</p>
+
+        {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="text-sm text-red-600">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form action="{% url 'users:upload_profile_picture' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-4">
+                <input type="file" name="profile_picture" accept="image/*" class="block w-full text-sm text-gray-500 
+                        file:mr-4 file:py-2 file:px-4 
+                        file:rounded-md file:border-0 
+                        file:text-sm file:font-semibold
+                        file:bg-blue-50 file:text-blue-700 
+                        hover:file:bg-blue-100" required />
+            </div>
+            <button type="submit" class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm 
+                    text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none 
+                    focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Upload
+            </button>
+        </form>
+
+        {% if user.profile_picture %}
+            <div class="mt-6">
+                <h4 class="text-lg font-semibold text-gray-800">Your Current Profile Picture:</h4>
+                <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="w-32 h-32 rounded-full border border-gray-300 mt-2" />
+            </div>
+        {% else %}
+            <p class="text-gray-500 mt-2">No profile picture uploaded yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

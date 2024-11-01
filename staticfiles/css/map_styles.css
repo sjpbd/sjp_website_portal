@@ -1,0 +1,101 @@
+ body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.search-container input,
+.search-container select,
+.search-container button {
+    padding: 5px;
+    margin: 0 5px;
+    font-size: 14px;
+}
+
+.search-container button {
+    background-color: #444;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    background-color: #555;
+}
+
+.main {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+#results-container {
+    width: 30%;
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+.ministry-card {
+    background-color: white;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.ministry-card h2 {
+    margin: 0 0 10px;
+    font-size: 18px;
+}
+
+.ministry-card p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.ministry-card button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.ministry-card button:hover {
+    background-color: #0056b3;
+}
+
+#map-container {
+    width: 65%;
+}
+
+#map {
+    width: 100%;
+    height: 500px;
+}
+ 
+
+ 

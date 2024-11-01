@@ -1,0 +1,154 @@
+{% extends 'users/userbase.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header text-center">
+            {% if object.header_image %}
+                <img src="{{ object.header_image.url }}" class="header-image" alt="Header Image">
+            {% endif %}
+            <h2 class="mt-3">{{ object.title }}</h2>
+            <p class="text-muted">{{ object.reference_number }}</p>
+        </div>
+
+        <div class="card-body">
+            <!-- Salutation -->
+            <p class="salutation">{{ object.salutation }},</p>
+            
+            <!-- Body Content -->
+            <div class="letter-body">
+                {{ object.body_text|safe }}
+            </div>
+            
+            <!-- Appointment Details -->
+            <hr>
+            <h5>Appointment Details</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Appointment Type:</strong> {{ object.get_appointment_type_display }}</li>
+                <li class="list-group-item"><strong>Effective Date:</strong> {{ object.effective_date }}</li>
+                {% if object.end_date %}
+                    <li class="list-group-item"><strong>End Date:</strong> {{ object.end_date }}</li>
+                {% endif %}
+                <li class="list-group-item"><strong>Previous Ministry:</strong> {{ object.previous_ministry }}</li>
+                <li class="list-group-item"><strong>New Ministry:</strong> {{ object.new_ministry }}</li>
+                <li class="list-group-item"><strong>New Designation:</strong> {{ object.new_designation }}</li>
+                <li class="list-group-item"><strong>Ministry Location:</strong> {{ object.ministry_location }}</li>
+            </ul>
+            
+            <!-- Authority Information -->
+            <hr>
+            <h5>Authority</h5>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p><strong>Provincial Name:</strong> {{ object.provincial_name }}</p>
+                    <p><strong>Provincial Designation:</strong> {{ object.provincial_designation }}</p>
+                </div>
+                <div class="text-end">
+                    {% if object.signature %}
+                        <img src="{{ object.signature.url }}" alt="Signature" class="signature-img">
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Footer Text -->
+            <hr>
+            <div class="footer-text">
+                <p>{{ object.footer_text }}</p>
+            </div>
+
+            <!-- Acknowledgment Section -->
+            <hr>
+            <h5>Acknowledgment</h5>
+            {% if object.appointmentacknowledgment %}
+                <p class="text-success">Acknowledged on: {{ object.appointmentacknowledgment.acknowledged_date }}</p>
+                <p><strong>Status:</strong> {{ object.appointmentacknowledgment.accepted|yesno:"Accepted,Declined" }}</p>
+                {% if object.appointmentacknowledgment.comments %}
+                    <p><strong>Comments:</strong> {{ object.appointmentacknowledgment.comments }}</p>
+                {% endif %}
+            {% else %}
+                <p class="text-danger">No acknowledgment received yet.</p>
+            {% endif %}
+        </div>
+
+        <div class="card-footer custom-footer text-center">
+            <p>Status: 
+                <span class="status-badge 
+                    {% if object.status == 'sent' %}status-sent
+                    {% elif object.status == 'accepted' %}status-accepted
+                    {% elif object.status == 'declined' %}status-declined
+                    {% else %}status-default{% endif %}">
+                    {{ object.get_status_display }}
+                </span>
+            </p>
+            <p>Sent on: {{ object.sent_date }}</p>
+
+            <!-- PDF Download Button -->
+            <a href="{% url 'appointments:generate_pdf' object.pk %}" class="btn btn-outline-primary mt-2">Download PDF</a>
+
+            <!-- Send Letter Button -->
+            {% if object.status != 'sent' %}
+                <a href="{% url 'appointments:send_letter' object.pk %}" class="btn btn-outline-success mt-2">Send Letter</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .header-image {
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto;
+    }
+
+    .signature-img {
+        max-width: 150px;
+        height: auto;
+    }
+
+    .letter-body {
+        margin-top: 1rem;
+        text-align: justify;
+    }
+
+    .footer-text {
+        font-style: italic;
+    }
+
+    .salutation {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .custom-footer {
+        background-color: #f8f9fa;
+        padding: 15px;
+        font-size: 14px;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 13px;
+        color: white;
+    }
+
+    .status-sent {
+        background-color: #007bff;
+    }
+
+    .status-accepted {
+        background-color: #28a745;
+    }
+
+    .status-declined {
+        background-color: #dc3545;
+    }
+
+    .status-default {
+        background-color: #6c757d;
+    }
+</style>
+{% endblock %}

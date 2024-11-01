@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FAQ</title>
+    <script src="{% static 'tinymce/tinymce.min.js' %}"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea', // Adjust the selector if needed
+            plugins: 'advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste code help wordcount',
+            toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help'
+        });
+    </script>
+    <style>
+        .accordion-item-body-content ul {
+    list-style-type: disc; /* or circle, square, etc. */
+    margin-left: 20px; /* or any other value for indentation */
+}
+
+    </style>
+</head>
+<body>
+    <!--=============== FAQ ===============-->
+    <section id="faq-section" class="faq-section scroll-reveal">
+        <div id="faq-title" class="sec-title">
+            <h2>FAQ'S</h2>
+        </div>
+        <div class="accordion">
+            {% for faq in faqs %}
+            <div class="accordion-item scroll-reveal">
+                <div class="accordion-item-header">
+                    {{ faq.question }}
+                </div>
+                <div class="accordion-item-body">
+                    <div class="accordion-item-body-content">
+                        {{ faq.answer|safe }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</body>
+<script>
+    const accordionItemHeaders = document.querySelectorAll(
+      ".accordion-item-header"
+    );
+
+    accordionItemHeaders.forEach((accordionItemHeader) => {
+      accordionItemHeader.addEventListener("click", (event) => {
+        // Uncomment in case you only want to allow for the display of only one collapsed item at a time!
+
+        const currentlyActiveAccordionItemHeader = document.querySelector(
+          ".accordion-item-header.active"
+        );
+        if (
+          currentlyActiveAccordionItemHeader &&
+          currentlyActiveAccordionItemHeader !== accordionItemHeader
+        ) {
+          currentlyActiveAccordionItemHeader.classList.toggle("active");
+          currentlyActiveAccordionItemHeader.nextElementSibling.style.maxHeight = 0;
+        }
+        accordionItemHeader.classList.toggle("active");
+        const accordionItemBody = accordionItemHeader.nextElementSibling;
+        if (accordionItemHeader.classList.contains("active")) {
+          accordionItemBody.style.maxHeight =
+            accordionItemBody.scrollHeight + "px";
+        } else {
+          accordionItemBody.style.maxHeight = 0;
+        }
+      });
+    });
+  </script>
+</html>

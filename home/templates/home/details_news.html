@@ -1,0 +1,66 @@
+{% extends "mainbase.html" %}
+{% load static %}
+
+{% block title %}{{ news_item.title }}{% endblock %}
+
+{% block content %}
+
+<!-- Breadcrumb Navigation -->
+<nav aria-label="breadcrumb" class="bg-gray-100 py-4">
+    <ol class="flex space-x-4 mx-auto max-w-4xl">
+        <li>
+            <a href="{% url 'home:home' %}" class="text-blue-600 hover:underline">Home</a>
+        </li>
+        <li class="text-gray-500">/</li>
+        <li class="font-semibold text-gray-800">{{ news_item.title }}</li>
+    </ol>
+</nav>
+
+<div class="flex flex-col md:flex-row max-w-6xl mx-auto my-8 gap-8">
+    <!-- News Detail Section -->
+    <section id="news-detail-section" class="flex-1 bg-white rounded-lg shadow-lg p-6">
+        <div class="sec-title mb-6">
+            <h1 class="text-4xl font-extrabold text-gray-900 hover:text-blue-600 transition duration-200">{{ news_item.title }}</h1>
+        </div>
+        <div class="news-meta flex items-center mb-4 text-sm text-gray-600">
+            <span class="news-detail-date mr-4 flex items-center">
+                <i class="fa-regular fa-calendar-days text-blue-500 mr-1"></i> 
+                {{ news_item.date|date:"F d, Y" }}
+            </span>
+            <span class="news-category flex items-center">
+                <i class="fa-solid fa-tag text-blue-500 mr-1"></i> 
+                {{ news_item.category }}
+            </span>
+        </div>
+        <div class="news-detail-content flex flex-col items-center">
+            <div class="image-container w-full max-w-lg mb-6">
+                <img src="{{ news_item.image.url }}" alt="{{ news_item.title }}" class="w-full h-auto rounded-lg shadow-md object-cover transition-transform transform hover:scale-105" />
+            </div>
+            <p class="text-lg text-gray-700 text-justify leading-relaxed">{{ news_item.content }}</p>
+        </div>
+    </section>
+
+    <!-- Recent News Section -->
+    <aside id="recent-news" class="w-full md:w-1/3 bg-white rounded-lg shadow-lg">
+        <h3 class="bg-blue-600 text-white text-lg font-semibold p-4 rounded-t-lg">Recent News</h3>
+        <ul class="divide-y divide-gray-200">
+            {% for recent in recent_news %}
+                <li>
+                    <a href="{% url 'home:news_detail' recent.slug %}" class="block p-4 hover:bg-gray-100 transition duration-200">
+                        <span class="news-item-title font-medium text-gray-800 hover:text-blue-600 transition duration-200">{{ recent.title }}</span>
+                        <span class="news-item-date text-sm text-gray-500">{{ recent.date|date:"F d, Y" }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </aside>
+</div>
+
+<!-- Additional Elements for Enhanced User Experience -->
+<!-- <div class="text-center mt-6">
+    <a href="{% url 'home:news_list' %}" class="inline-block px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition duration-300">
+        View All News
+    </a>
+</div> -->
+
+{% endblock %}

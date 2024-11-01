@@ -1,0 +1,87 @@
+{% extends 'mainbase.html' %}
+{% load static %}
+
+{% block title %}{{ detailed_about.title }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-6 py-16 md:py-24">
+  <div class="about-header text-center mb-10">
+    <h1 class="text-4xl md:text-5xl font-extrabold tracking-wide" style="color: black;">{{ detailed_about.title }}</h1>
+    <div class="accent-line mx-auto"></div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+    <div class="image-wrapper flex justify-center">
+      <img src="{{ detailed_about.detailed_image1.url }}" alt="About Us Image 1" class="w-full md:w-3/4 shadow-lg">
+    </div>
+    <div class="text-content px-4">
+      <p>{{ detailed_about.detailed_content1|safe }}</p>
+      <p>{{ detailed_about.detailed_content2|safe }}</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center mt-12">
+    <div class="text-content px-4 md:order-1">
+      <p>{{ detailed_about.detailed_content3|safe }}</p>
+      <p>{{ detailed_about.detailed_content4|safe }}</p>
+    </div>
+    <div class="image-wrapper flex justify-center md:order-2">
+      <img src="{{ detailed_about.detailed_image2.url }}" alt="About Us Image 2" class="w-full md:w-3/4 shadow-lg">
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center mt-12">
+    <div class="image-wrapper flex justify-center">
+      <img src="{{ detailed_about.detailed_image3.url }}" alt="About Us Image 3" class="w-full md:w-3/4 shadow-lg">
+    </div>
+    <div class="text-content px-4">
+      <p>{{ detailed_about.detailed_content5|safe }}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  :root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --accent-color: #ffc107;
+    --background-color: #f8f9fa;
+    --heading-color: #1f2937;
+  }
+
+  body {
+    background-color: var(--background-color);
+  }
+
+  .about-header h1 {
+    background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .text-content p {
+    color: var(--secondary-color);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .image-wrapper img {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    border-radius: 0.75rem;
+  }
+
+  .image-wrapper img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .accent-line {
+    width: 50px;
+    height: 4px;
+    background-color: var(--primary-color);
+    margin-top: 0.5rem;
+  }
+</style>
+{% endblock %}

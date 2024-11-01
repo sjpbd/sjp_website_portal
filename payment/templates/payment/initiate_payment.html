@@ -1,0 +1,287 @@
+{% extends 'mainbase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="custom-payment-container d-flex align-items-center justify-content-center" style="margin-top: 2rem;">
+    <div class="custom-payment-wrapper">
+        <div class="custom-payment-card shadow-lg rounded-4">
+            <div class="custom-payment-header">
+                <h3 class="m-0">Payment Information</h3>
+                <p class="text-sm text-white mt-1">Secured payment by SSLCommerz</p>
+            </div>
+
+            <div class="custom-payment-body">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show custom-alert" role="alert">
+                            {{ message }}
+                            <button type="button" class="alert-close btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post" id="customPaymentForm" novalidate>
+                    {% csrf_token %}
+
+                    <!-- Amount and Currency -->
+                    <div class="custom-form-row mb-4">
+                        <div class="custom-form-group">
+                            <label for="{{ form.amount.id_for_label }}">Amount*</label>
+                            {{ form.amount }}
+                            <div class="invalid-feedback">{{ form.amount.errors }}</div>
+                        </div>
+                        <div class="custom-form-group">
+                            <label for="{{ form.currency.id_for_label }}">Currency*</label>
+                            {{ form.currency }}
+                            <div class="invalid-feedback">{{ form.currency.errors }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Customer Information -->
+                    <div class="custom-form-row mb-4">
+                        <div class="custom-form-group">
+                            <label for="{{ form.customer_name.id_for_label }}">Full Name*</label>
+                            {{ form.customer_name }}
+                            <div class="invalid-feedback">{{ form.customer_name.errors }}</div>
+                        </div>
+                        <div class="custom-form-group">
+                            <label for="{{ form.customer_email.id_for_label }}">Email*</label>
+                            {{ form.customer_email }}
+                            <div class="invalid-feedback">{{ form.customer_email.errors }}</div>
+                        </div>
+                    </div>
+
+                    <div class="custom-form-group mb-4">
+                        <label for="{{ form.customer_phone.id_for_label }}">Phone Number*</label>
+                        {{ form.customer_phone }}
+                        <small class="text-muted">{{ form.customer_phone.help_text }}</small>
+                        <div class="invalid-feedback">{{ form.customer_phone.errors }}</div>
+                    </div>
+
+                    <div class="custom-form-group mb-4">
+                        <label for="{{ form.customer_address.id_for_label }}">Address*</label>
+                        {{ form.customer_address }}
+                        <div class="invalid-feedback">{{ form.customer_address.errors }}</div>
+                    </div>
+
+                    <div class="custom-form-row mb-4">
+                        <div class="custom-form-group">
+                            <label for="{{ form.customer_city.id_for_label }}">City*</label>
+                            {{ form.customer_city }}
+                            <div class="invalid-feedback">{{ form.customer_city.errors }}</div>
+                        </div>
+                        <div class="custom-form-group">
+                            <label for="{{ form.customer_postcode.id_for_label }}">Postal Code*</label>
+                            {{ form.customer_postcode }}
+                            <div class="invalid-feedback">{{ form.customer_postcode.errors }}</div>
+                        </div>
+                    </div>
+
+                    
+                    <!-- Payment Method -->
+                    <div class="custom-payment-methods mb-4">
+                        <label class="form-label">Payment Method*</label>
+                        <div class="custom-methods-group">
+                            {% for method, name in form.payment_method.field.choices %}
+                            {% if method %} <!-- Skip empty choices -->
+                            <div class="form-check custom-method-item">
+                                <input type="radio" name="payment_method" value="{{ method }}" id="payment_method_{{ forloop.counter }}" class="form-check-input" {% if form.payment_method.value == method %}checked{% endif %}>
+                                <label class="form-check-label d-flex align-items-center" for="payment_method_{{ forloop.counter }}">
+                                    <img src="{% static 'payment/icons/'|add:method|add:'.png' %}" alt="{{ name }}" class="custom-payment-icon me-2">
+                                    {{ name }}
+                                </label>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="invalid-feedback">{{ form.payment_method.errors }}</div>
+                    </div>
+
+
+                    <div class="custom-form-submit">
+                        <button type="submit" class="btn btn-primary">Proceed to Payment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Scoped CSS with unique class selectors */
+    .custom-payment-container {
+        min-height: 100vh;
+        background: linear-gradient(145deg, #f0f4f8, #e5ecf3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .custom-payment-wrapper {
+        max-width: 700px;
+        padding: 2rem;
+    }
+
+    .custom-payment-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.2s ease;
+    }
+
+    .custom-payment-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .custom-payment-header {
+        background: linear-gradient(135deg, #4f46e5, #3b82f6);
+        padding: 1.5rem;
+        text-align: center;
+        border-radius: 16px 16px 0 0;
+    }
+
+    .custom-payment-header h3 {
+        color: #ffffff;
+        font-size: 1.75rem;
+        font-weight: 600;
+    }
+
+    .custom-payment-body {
+        padding: 1.5rem 2rem;
+        background: #f9fafb;
+        border-radius: 0 0 16px 16px;
+    }
+
+    .custom-alert {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+
+    .custom-form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .custom-form-group {
+        flex: 1 1 48%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .custom-form-group label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #374151;
+    }
+
+    .custom-form-group input,
+    .custom-form-group select,
+    .custom-form-group textarea {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        background-color: #f3f4f6;
+        font-size: 1rem;
+    }
+
+    .custom-payment-methods {
+        margin-top: 1rem;
+    }
+
+    .custom-methods-group {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .custom-method-item {
+        padding: 1rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .custom-payment-icon {
+        height: 40px;
+        margin-bottom: 0.5rem;
+    }
+
+    .custom-form-submit {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .custom-form-submit button {
+        background: linear-gradient(135deg, #4f46e5, #3b82f6);
+        color: #ffffff;
+        padding: 0.875rem 2.5rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+    }
+</style>
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('paymentForm');
+    
+    form.addEventListener('submit', function(event) {
+        let isValid = true;
+        
+        form.querySelectorAll('.is-invalid').forEach(element => {
+            element.classList.remove('is-invalid');
+        });
+
+        ['customer_name', 'customer_email', 'customer_phone', 'customer_address', 
+         'customer_city', 'customer_postcode', 'amount'].forEach(fieldName => {
+            const field = form.querySelector(`[name="${fieldName}"]`);
+            if (!field.value.trim()) {
+                field.classList.add('is-invalid');
+                isValid = false;
+            }
+        });
+
+        const emailField = form.querySelector('[name="customer_email"]');
+        if (emailField.value && !isValidEmail(emailField.value)) {
+            emailField.classList.add('is-invalid');
+            isValid = false;
+        }
+
+        const phoneField = form.querySelector('[name="customer_phone"]');
+        if (phoneField.value && !isValidPhone(phoneField.value)) {
+            phoneField.classList.add('is-invalid');
+            isValid = false;
+        }
+
+        const paymentMethod = form.querySelector('input[name="payment_method"]:checked');
+        if (!paymentMethod) {
+            form.querySelector('.payment-methods').classList.add('is-invalid');
+            isValid = false;
+        }
+
+        if (!isValid) {
+            event.preventDefault();
+            alert('Please fill in all required fields correctly.');
+        }
+    });
+
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function isValidPhone(phone) {
+        return /^\+?880\d{10}$/.test(phone);
+    }
+});
+</script>
+{% endblock %}

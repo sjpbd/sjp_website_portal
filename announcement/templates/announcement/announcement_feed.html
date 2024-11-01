@@ -1,0 +1,111 @@
+<!-- announcement/templates/announcement/news_feed.html -->
+{% extends "users/userbase.html" %}
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-4">News Feed</h1>
+        
+        <!-- Button to post a new news item -->
+        <a href="{% url 'announcement:post_announcement' %}" 
+           class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg mb-4 inline-block transition-colors duration-200">
+            Post News
+        </a>
+
+        <!-- Latest news marquee -->
+        <div class="bg-gray-800 text-white p-4 rounded-lg mb-6">
+            <marquee behavior="scroll" direction="left" class="text-lg">
+                <strong>Latest News:</strong>
+                {% for news in latest_news %}
+                    {{ news.title }} — <span class="font-bold text-yellow-300">{{ news.author.get_full_name }}</span> |
+                {% endfor %}
+            </marquee>
+        </div>
+
+        <!-- Display each news post -->
+        <div class="space-y-6">
+            {% for news in news_posts %}
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-3">{{ news.title }}</h2>
+                    <p class="text-gray-600 mb-4">{{ news.content }}</p>
+                    <div class="flex justify-between items-center">
+                        <p class="text-gray-500 text-sm">
+                            Posted by <span class="font-bold">{{ news.author.get_full_name }}</span>
+                            <br>
+                            <span class="text-gray-400">{{ news.created_at|date:"F j, Y, g:i a" }}</span>
+                        </p>
+                        {% if news.author == request.user %}
+                            <div class="space-x-4">
+                                <a href="{% url 'announcement:update_news' news.pk %}" 
+                                   class="text-blue-500 hover:text-blue-700 transition-colors">
+                                    <span class="mr-1">✏️</span>Edit
+                                </a>
+                                <a href="{% url 'announcement:delete_news' news.pk %}" 
+                                   class="text-red-500 hover:text-red-700 transition-colors">
+                                    <span class="mr-1">🗑️</span>Delete
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="text-center py-8">
+                    <p class="text-gray-500 text-lg">No news posts available.</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if news_posts.paginator.num_pages > 1 %}
+            <div class="mt-8">
+                <!-- Pagination Navigation -->
+                <div class="flex items-center justify-center space-x-2">
+                    <!-- Previous Page -->
+                    {% if news_posts.has_previous %}
+                        <a href="?page={{ news_posts.previous_page_number }}" 
+                           class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors duration-200">
+                            ← Previous
+                        </a>
+                    {% else %}
+                        <span class="px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm font-medium text-gray-400 cursor-not-allowed">
+                            ← Previous
+                        </span>
+                    {% endif %}
+
+                    <!-- Page Numbers -->
+                    <div class="hidden sm:flex items-center space-x-2">
+                        {% for num in news_posts.paginator.page_range %}
+                            {% if num == news_posts.number %}
+                                <span class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium">
+                                    {{ num }}
+                                </span>
+                            {% elif num > news_posts.number|add:'-3' and num < news_posts.number|add:'3' %}
+                                <a href="?page={{ num }}" 
+                                   class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors duration-200">
+                                    {{ num }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <!-- Next Page -->
+                    {% if news_posts.has_next %}
+                        <a href="?page={{ news_posts.next_page_number }}" 
+                           class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors duration-200">
+                            Next →
+                        </a>
+                    {% else %}
+                        <span class="px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm font-medium text-gray-400 cursor-not-allowed">
+                            Next →
+                        </span>
+                    {% endif %}
+                </div>
+
+                <!-- Page Information -->
+                <div class="text-center text-sm text-gray-500 mt-4">
+                    Page {{ news_posts.number }} of {{ news_posts.paginator.num_pages }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

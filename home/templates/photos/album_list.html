@@ -1,0 +1,51 @@
+{% extends 'mainbase.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<section class="py-16 bg-gray-100">
+    <div class="max-w-6xl mx-auto px-4">
+        <h1 class="text-4xl font-bold mb-8 text-center text-gray-800" data-aos="fade-down">Photo Albums</h1>
+        {% if albums %}
+            <div class="flex flex-wrap -mx-4">
+                {% for album in albums %}
+                <div class="w-full md:w-1/3 px-4 mb-8" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1|stringformat:'d'}}00">
+                    <div class="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105">
+                        {% if album.thumb %}
+                            <img src="{{ album.thumb.url }}" class="w-full h-auto" alt="{{ album.title }}">
+                        {% else %}
+                            <div class="h-64 bg-gray-200 flex items-center justify-center">
+                                <span class="text-gray-500">No image available</span>
+                            </div>
+                        {% endif %}
+                        <div class="p-4">
+                            <h5 class="text-xl font-semibold mb-2 text-gray-800">{{ album.title }}</h5>
+                            <p class="text-gray-600 mb-4">{{ album.description|truncatewords:20 }}</p>
+                            <a href="{{ album.get_absolute_url }}" class="inline-block px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded transition-colors font-bold">View Album</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-gray-600">No albums available at the moment.</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        mirror: false
+    });
+    console.log("AOS initialized");
+</script>
+{% endblock %}

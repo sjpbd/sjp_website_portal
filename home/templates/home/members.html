@@ -1,0 +1,26 @@
+{% extends "mainbase.html" %}
+{% load static %}
+
+{% block title %}Members{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Members</li>
+    </ol>
+</nav>
+<section>
+    <div class="members-container">
+        <h1 class="page-title">Members of the St. Joseph Province, Bangladesh</h1>
+        <div class="members-card-container">
+            {% for member in members %}
+            <div class="card">
+                <img src="{{ member.image.url }}" alt="Image of {{ member.name }}" />
+                <h3 class="card-name">{{ member.name }}</h3>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

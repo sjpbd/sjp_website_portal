@@ -1,0 +1,204 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5;
+}
+.profile-container {
+    max-width: 1000px;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+.profile-header {
+    background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%);
+    color: #fff;
+    padding: 40px;
+    text-align: center;
+    position: relative;
+}
+.profile-pic-container {
+    position: relative;
+    display: inline-block;
+}
+.profile-pic {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    object-fit: cover;
+    margin-bottom: 20px;
+    transition: filter 0.3s;
+}
+.profile-pic:hover {
+    filter: brightness(80%);
+}
+.profile-pic-edit {
+    position: absolute;
+    bottom: 25px;
+    right: 0;
+    background-color: #fff;
+    color: #4a00e0;
+    border-radius: 50%;
+    padding: 8px;
+    font-size: 18px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.profile-pic-container:hover .profile-pic-edit {
+    opacity: 1;
+}
+.profile-name {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.profile-title {
+    font-size: 18px;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+.section {
+    padding: 30px;
+    border-bottom: 1px solid #e0e0e0;
+}
+.section:last-child {
+    border-bottom: none;
+}
+.section-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+.section-title i {
+    margin-right: 10px;
+    color: #4a00e0;
+}
+.info-item {
+    margin-bottom: 15px;
+}
+.info-label {
+    font-weight: bold;
+    color: #555;
+}
+.btn-edit {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.btn-edit:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+.publication-item {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: box-shadow 0.3s;
+}
+.publication-item:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+.publication-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+.publication-details {
+    font-size: 14px;
+    color: #666;
+}
+.table-responsive {
+    margin-top: 20px;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: #4a00e0 !important;
+    color: #fff !important;
+    border-color: #4a00e0 !important;
+}
+.social-links {
+    margin-top: 20px;
+}
+.social-links a {
+    color: #fff;
+    font-size: 24px;
+    margin: 0 10px;
+    transition: opacity 0.3s;
+}
+.social-links a:hover {
+    opacity: 0.8;
+}
+
+/* new styles */
+
+.section {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    color: #343a40;
+    display: flex;
+    align-items: center;
+}
+
+.section-title i {
+    margin-right: 10px;
+}
+
+.info-card {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.info-item {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    width: calc(50% - 10px); /* Adjust this width based on your preference */
+    transition: transform 0.3s ease;
+}
+
+.info-item:hover {
+    transform: translateY(-5px);
+}
+
+.info-item i {
+    font-size: 18px;
+    color: #007bff;
+    margin-right: 10px;
+}
+
+.info-item span {
+    font-size: 16px;
+    color: #495057;
+}
+
+.info-item strong {
+    color: #007bff;
+}

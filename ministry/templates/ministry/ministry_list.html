@@ -1,0 +1,107 @@
+{% extends 'mainbase.html' %}
+{% load render_table from django_tables2 %}
+{% block title %}Ministries{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Title Section -->
+    <div class="text-center mb-10 mt-10"> 
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Ministries of St. Joseph Province</h2>
+        <div class="w-20 h-1 bg-blue-600 mx-auto"></div>
+    </div>
+
+
+    <!-- Tabs Section -->
+    <div class="flex flex-wrap justify-center gap-2 mb-8">
+        <a href="?ministry_type=" 
+           class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 
+                  {% if not request.GET.ministry_type %}
+                      bg-blue-600 text-white shadow-md hover:bg-blue-700
+                  {% else %}
+                      bg-gray-100 text-gray-700 hover:bg-gray-200
+                  {% endif %}">
+            All
+        </a>
+        {% for ministry_type in ministry_types %}
+        <a href="?ministry_type={{ ministry_type.slug }}"
+           class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+                  {% if request.GET.ministry_type == ministry_type.slug %}
+                      bg-blue-600 text-white shadow-md hover:bg-blue-700
+                  {% else %}
+                      bg-gray-100 text-gray-700 hover:bg-gray-200
+                  {% endif %}">
+            {{ ministry_type.name }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Table Section -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead>
+                    <tr class="bg-gray-50">
+                        {% for column in ministry_table.columns %}
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            {{ column.header }}
+                        </th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for row in ministry_table.rows %}
+                    <tr class="hover:bg-gray-50 transition-colors duration-200">
+                        {% for cell in row %}
+                        <td class="px-6 py-4 whitespace-normal">
+                            <div class="text-sm text-gray-900">
+                                {% if forloop.last %}
+                                    {{ cell|safe }}
+                                {% else %}
+                                    {{ cell }}
+                                {% endif %}
+                            </div>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Empty State (Optional) -->
+{% if not ministry_table.rows %}
+<div class="text-center py-12">
+    <div class="text-gray-400">
+        <svg class="mx-auto h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <p class="mt-4 text-lg font-medium">No ministries found</p>
+        <p class="mt-2 text-sm">Please try different filters or check back later.</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.tiny.cloud/1/YOUR_TINYMCE_API_KEY/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+        selector: 'td:last-child',
+        inline: true,
+        menubar: false,
+        toolbar: false,
+        plugins: [
+            'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+        ],
+        toolbar: 'undo redo | formatselect | ' +
+        'bold italic backcolor | alignleft aligncenter ' +
+        'alignright alignjustify | bullist numlist outdent indent | ' +
+        'removeformat | help',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'mainbase.html' %}
+{% load static %}
+{% block title %}Province Leadership{% endblock %}
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<section class="font-montserrat bg-gray-100 py-16">
+    <div class="max-w-6xl mx-auto px-4">
+        <h1 class="text-4xl font-bold text-center mb-12 text-gray-800 relative">
+            Our Province Leadership Team
+            <span class="block w-12 h-1 bg-gradient-to-r from-pink-400 to-purple-600 mt-4 mx-auto"></span>
+        </h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {% for member in province_leadership %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition-all hover:-translate-y-1 hover:shadow-lg">
+                <div class="w-44 h-44 mx-auto mt-6 relative overflow-hidden rounded-full border-4 border-gray-200">
+                    <img src="{{ member.image.url }}" alt="{{ member.name }}" class="w-full h-full object-cover object-top">
+                </div>
+                <div class="p-4 text-center">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-1">{{ member.name }}</h2>
+                    <p class="text-sm text-gray-600 mb-2 uppercase tracking-wide">{{ member.role }}</p>
+                    <p class="text-sm text-gray-700">
+                        <a href="mailto:{{ member.email }}" class="text-purple-600 hover:text-pink-400 transition-colors">{{ member.email }}</a>
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const members = document.querySelectorAll('.hover\\:-translate-y-1');
+        members.forEach(member => {
+            member.addEventListener('mouseenter', function() {
+                members.forEach(el => el.classList.remove('bg-white', 'shadow-md'));
+                this.classList.add('bg-gray-50', 'shadow-lg');
+            });
+            member.addEventListener('mouseleave', function() {
+                this.classList.remove('bg-gray-50', 'shadow-lg');
+            });
+        });
+    });
+</script>
+{% endblock %}

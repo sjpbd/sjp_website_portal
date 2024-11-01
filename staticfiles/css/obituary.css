@@ -1,0 +1,98 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Header styles */
+#header {
+  background-color: #333;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#header h1 {
+  font-size: 2.5rem;
+  font-family: "Georgia", serif;
+  margin-bottom: 10px;
+  color: #f0f0f0;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px #84837c;
+}
+
+/* Obituary container */
+.obituary-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* Adjust the top margin as needed */
+  width: 100%;
+}
+
+.obituary-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%; /* Adjust the width as needed */
+}
+
+/* Card styles */
+.card {
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  border: 2px solid #0c0c0c;
+  transition: transform 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; /* Add space between cards */
+  width: 100%; /* Make the card take full width of the container */
+}
+
+.card img {
+  width: 170px;
+  height: 200px;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.card-button {
+  font-family: "Georgia", serif;
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 10px 20px;
+  border: none;
+  background-color: #333;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+.card-button:hover,
+.card img:hover {
+  background-color: #555;
+  transform: scale(1.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #header h1 {
+    font-size: 2rem;
+  }
+
+  .obituary-card-container {
+    width: 100%;
+  }
+
+  .card {
+    width: 100%;
+  }
+}

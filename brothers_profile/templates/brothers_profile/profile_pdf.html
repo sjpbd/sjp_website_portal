@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Profile</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #f8f9fa;
+            --accent-color: #3498db;
+            --text-color: #333;
+            --light-text-color: #6c757d;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--secondary-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: var(--primary-color);
+            color: #fff;
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .section {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: baseline;
+            font-size: 0.8rem;
+        }
+
+        .info-item strong {
+            color: var(--light-text-color);
+            min-width: 120px;
+            margin-right: 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: #fff;
+            font-weight: normal;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 0;
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>{{ profile.first_name }} {{ profile.last_name }}</h1>
+        </header>
+
+        <div class="section" id="personalInfo">
+            <h2 class="section-title">Personal Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>First Name:</strong>
+                    <span>{{ profile.first_name }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Middle Name:</strong>
+                    <span>{{ profile.middle_name }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Last Name:</strong>
+                    <span>{{ profile.last_name }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Date of Birth:</strong>
+                    <span>{{ profile.date_of_birth }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Place of Birth:</strong>
+                    <span>{{ profile.place_of_birth }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Father's Name:</strong>
+                    <span>{{ profile.father_name }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Mother's Name:</strong>
+                    <span>{{ profile.mother_name }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Parish Name:</strong>
+                    <span>{{ profile.parish_name }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>District:</strong>
+                    <span>{{ profile.dist_name }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Blood Group:</strong>
+                    <span>{{ profile.blood_group }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>NID Number:</strong>
+                    <span>{{ profile.nid_number }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Passport Number:</strong>
+                    <span>{{ profile.passport_number }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Mobile Number:</strong>
+                    <span>{{ profile.mobile_number }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Email Address:</strong>
+                    <span>{{ profile.email_address }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="religiousInfo">
+            <h2 class="section-title">Religious Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>Date of Joining:</strong>
+                    <span>{{ religious_info.date_of_joining }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Date of First Vows:</strong>
+                    <span>{{ religious_info.date_of_first_vows }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Date of Final Vows:</strong>
+                    <span>{{ religious_info.date_of_final_vows }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="academicInfo">
+            <h2 class="section-title">Academic Information</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Degree</th>
+                        <th>Institution</th>
+                        <th>Grade/GPA</th>
+                        <th>Year</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in academic_records %}
+                        <tr>
+                            <td>{{ record.degree }}</td>
+                            <td>{{ record.institution }}</td>
+                            <td>{{ record.grade }}</td>
+                            <td>{{ record.year }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section" id="experienceInfo">
+            <h2 class="section-title">Experience</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>Organization</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for experience in experiences %}
+                        <tr>
+                            <td>{{ experience.position }}</td>
+                            <td>{{ experience.organization }}</td>
+                            <td>{{ experience.start_date }}</td>
+                            <td>{{ experience.end_date }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section" id="publicationsInfo">
+            <h2 class="section-title">Publications</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Journal/Conference</th>
+                        <th>Year</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for publication in publications %}
+                        <tr>
+                            <td>{{ publication.title }}</td>
+                            <td>{{ publication.journal }}</td>
+                            <td>{{ publication.year }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

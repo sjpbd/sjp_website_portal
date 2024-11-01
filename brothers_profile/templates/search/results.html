@@ -1,0 +1,14 @@
+<form method="get" action="{% url 'profile_search' %}">
+    <input type="text" name="q" value="{{ query }}" placeholder="Search profiles...">
+    <button type="submit">Search</button>
+</form>
+
+{% if results %}
+    <ul>
+        {% for result in results %}
+            <li>{{ result.object.first_name }} {{ result.object.last_name }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No results found.</p>
+{% endif %}

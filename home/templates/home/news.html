@@ -1,0 +1,237 @@
+{% load static %}
+{% block content %}
+<section id="unique-news-section" class="py-8 bg-gray-100">
+  <div id="unique-news-title" class="container mx-auto px-4 text-center mb-6">
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Latest News</h2>
+    <!-- Added navigation controls -->
+    <div class="flex justify-center gap-4 mt-4">
+      <button id="prev-news" class="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <button id="next-news" class="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  
+  <div class="container mx-auto px-4 overflow-hidden">
+    <div id="news-carousel" class="relative">
+      <div id="news-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-transform duration-500">
+        {% for news_item in news_items %}
+        <div class="news-card bg-white rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105">
+          <div class="h-48 md:h-56 overflow-hidden">
+            {% if news_item.image %}
+              <img 
+                src="{{ news_item.image.url }}" 
+                alt="{{ news_item.title }}" 
+                class="w-full h-full object-cover"
+                loading="lazy"
+                onerror="this.src='{% static 'images/default-news.jpg' %}'"
+              >
+            {% else %}
+              <img 
+                src="{% static 'images/default-news.jpg' %}" 
+                alt="Default news image" 
+                class="w-full h-full object-cover"
+              >
+            {% endif %}
+          </div>
+          
+          <div class="p-4 md:p-5 flex flex-col">
+            <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-2 line-clamp-2 min-h-[2.5rem] md:min-h-[3rem]">
+              {{ news_item.title }}
+            </h3>
+            
+            <div class="flex-grow">
+              <p class="text-sm md:text-base text-gray-600 leading-relaxed line-clamp-3 min-h-[4.5rem] md:min-h-[5rem]">
+                {{ news_item.content|truncatewords:25 }}
+              </p>
+            </div>
+            
+            <div class="mt-4 pt-3 border-t border-gray-200">
+              <div class="flex justify-between items-center">
+                <span class="text-xs md:text-sm text-gray-500 flex items-center">
+                  <i class="fa-regular fa-calendar-days mr-1"></i>
+                  {{ news_item.date|date:"d M Y" }}
+                </span>
+                
+                <a 
+                  href="{% url 'home:news_detail' news_item.slug %}" 
+                  class="inline-flex items-center text-sm md:text-base text-blue-600 font-medium hover:text-blue-700 transition-colors"
+                >
+                  Read More
+                  <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Add this at the end of your template -->
+<script>
+  // Static/js/news-carousel.js
+document.addEventListener('DOMContentLoaded', function() {
+    const newsContainer = document.getElementById('news-container');
+    const prevButton = document.getElementById('prev-news');
+    const nextButton = document.getElementById('next-news');
+    let currentPage = 1;
+    let isLoading = false;
+    let autoScrollInterval;
+    
+    // Initialize auto-scroll
+    startAutoScroll();
+    
+    // Function to start auto-scrolling
+    function startAutoScroll() {
+        autoScrollInterval = setInterval(() => {
+            loadNextNews();
+        }, 5000); // Scroll every 5 seconds
+    }
+    
+    // Function to stop auto-scrolling
+    function stopAutoScroll() {
+        clearInterval(autoScrollInterval);
+    }
+    
+    // Add hover listeners to pause auto-scroll
+    newsContainer.addEventListener('mouseenter', stopAutoScroll);
+    newsContainer.addEventListener('mouseleave', startAutoScroll);
+    
+    // Load next set of news
+    async function loadNextNews() {
+        if (isLoading) return;
+        isLoading = true;
+        currentPage++;
+        
+        try {
+            const response = await fetch(`/api/news/?page=${currentPage}`);
+            const data = await response.json();
+            
+            if (data.news_items.length > 0) {
+                // Animate current items out
+                const currentItems = newsContainer.children;
+                Array.from(currentItems).forEach(item => {
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateX(-100%)';
+                });
+                
+                // After animation, replace with new items
+                setTimeout(() => {
+                    newsContainer.innerHTML = '';
+                    renderNewsItems(data.news_items);
+                }, 500);
+            } else {
+                // Reset to first page if no more news
+                currentPage = 1;
+                const response = await fetch(`/api/news/?page=1`);
+                const data = await response.json();
+                renderNewsItems(data.news_items);
+            }
+        } catch (error) {
+            console.error('Error loading news:', error);
+        } finally {
+            isLoading = false;
+        }
+    }
+    
+    // Load previous set of news
+    async function loadPrevNews() {
+        if (isLoading || currentPage <= 1) return;
+        isLoading = true;
+        currentPage--;
+        
+        try {
+            const response = await fetch(`/api/news/?page=${currentPage}`);
+            const data = await response.json();
+            renderNewsItems(data.news_items);
+        } catch (error) {
+            console.error('Error loading news:', error);
+        } finally {
+            isLoading = false;
+        }
+    }
+    
+    // Render news items with animation
+    function renderNewsItems(newsItems) {
+        newsContainer.innerHTML = newsItems.map(item => `
+            <div class="news-card bg-white rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 opacity-0"
+                 style="transform: translateX(100%)">
+                <div class="h-48 md:h-56 overflow-hidden">
+                    <img 
+                        src="${item.image_url}" 
+                        alt="${item.title}" 
+                        class="w-full h-full object-cover"
+                        loading="lazy"
+                        onerror="this.src='/static/images/default-news.jpg'"
+                    >
+                </div>
+                
+                <div class="p-4 md:p-5 flex flex-col">
+                    <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-2 line-clamp-2 min-h-[2.5rem] md:min-h-[3rem]">
+                        ${item.title}
+                    </h3>
+                    
+                    <div class="flex-grow">
+                        <p class="text-sm md:text-base text-gray-600 leading-relaxed line-clamp-3 min-h-[4.5rem] md:min-h-[5rem]">
+                            ${item.content}
+                        </p>
+                    </div>
+                    
+                    <div class="mt-4 pt-3 border-t border-gray-200">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs md:text-sm text-gray-500 flex items-center">
+                                <i class="fa-regular fa-calendar-days mr-1"></i>
+                                ${item.date}
+                            </span>
+                            
+                            <a 
+                                href="/news/${item.slug}/" 
+                                class="inline-flex items-center text-sm md:text-base text-blue-600 font-medium hover:text-blue-700 transition-colors"
+                            >
+                                Read More
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        
+        // Animate new items in
+        setTimeout(() => {
+            const newItems = newsContainer.children;
+            Array.from(newItems).forEach(item => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateX(0)';
+            });
+        }, 50);
+    }
+    
+    // Event listeners for navigation buttons
+    prevButton.addEventListener('click', () => {
+        stopAutoScroll();
+        loadPrevNews();
+        startAutoScroll();
+    });
+    
+    nextButton.addEventListener('click', () => {
+        stopAutoScroll();
+        loadNextNews();
+        startAutoScroll();
+    });
+});
+</script>
+{% endblock %}

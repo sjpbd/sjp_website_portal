@@ -1,0 +1,20 @@
+{% extends "greetings-base.html" %}
+{% block title %}Your Greetings{% endblock %}
+{% block content %}
+<h1 class="mb-4">Your Greetings</h1>
+<div class="row">
+    {% for greeting in greetings %}
+    <div class="col-md-4 mb-4">
+        <div class="greeting-card">
+            <h2>{{ greeting.get_greeting_type_display }}</h2>
+            <p class="greeting-date">Date: {{ greeting.date }}</p>
+            <p>{{ greeting.message }}</p>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <p class="alert alert-info">No greetings available.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

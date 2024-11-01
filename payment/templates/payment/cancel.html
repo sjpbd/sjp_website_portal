@@ -1,0 +1,97 @@
+{% extends 'mainbase.html' %}
+{% load static %}
+
+<style>
+    /* Background styling */
+    body {
+        background-color: #f9fafb; /* Light background for a clean look */
+    }
+
+    /* Container */
+    .payment-cancel-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    /* Card styling */
+    .payment-cancel-card {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 450px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .payment-cancel-card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Header styling */
+    .payment-cancel-header {
+        background: linear-gradient(135deg, #e3342f, #f06543);
+        color: #ffffff;
+        padding: 25px 20px;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .payment-cancel-header h3 {
+        margin: 0;
+        font-size: 1.8rem;
+    }
+
+    /* Body styling */
+    .payment-cancel-body {
+        padding: 30px 20px;
+        text-align: center;
+    }
+
+    .payment-cancel-message {
+        font-size: 1.1rem;
+        color: #374151;
+        margin-top: 15px;
+        line-height: 1.6;
+    }
+
+    /* Button styling */
+    .payment-cancel-button {
+        display: inline-block;
+        padding: 12px 32px;
+        font-size: 1rem;
+        background-color: #1d4ed8;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        text-transform: uppercase;
+        transition: background-color 0.3s, box-shadow 0.2s;
+        margin-top: 20px;
+    }
+
+    .payment-cancel-button:hover {
+        background-color: #1e3a8a;
+        box-shadow: 0 8px 16px rgba(30, 58, 138, 0.3);
+    }
+</style>
+
+{% block content %}
+<div class="payment-cancel-container">
+    <div class="payment-cancel-card">
+        <div class="payment-cancel-header">
+            <h3>Payment Cancelled</h3>
+        </div>
+        <div class="payment-cancel-body">
+            <p class="payment-cancel-message">
+                We're sorry, but your payment could not be completed. Please check your details or contact support for assistance.
+            </p>
+            <a href="{% url 'home:home' %}" class="payment-cancel-button">Return to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+<!-- brothers_profile/templates/brothers_profile/search_results.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .profile-card {
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .profile-picture {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        .no-results {
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4 text-center">Search Results for "{{ query }}"</h1>
+        
+        {% if profiles %}
+            <div class="row">
+                {% for profile in profiles %}
+                    <div class="col-md-4">
+                        <div class="profile-card d-flex align-items-center">
+                            {% if profile.profile_picture %}
+                                <img src="{{ profile.profile_picture.url }}" alt="{{ profile.user.username }}'s Profile Picture" class="profile-picture">
+                            {% else %}
+                                <img src="img/default_avatar_profile.jpg" alt="Default Profile Picture" class="profile-picture">
+                            {% endif %}
+                            <div>
+                                <h5>{{ profile.first_name }} {{ profile.middle_name }} {{ profile.last_name }}</h5>
+                                <p class="mb-1"><strong>Username:</strong> {{ profile.user.username }}</p>
+                                <p class="mb-1"><strong>Email:</strong> {{ profile.email_address }}</p>
+                                <p class="mb-0"><strong>Mobile:</strong> {{ profile.mobile_number }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-results text-center">No profiles found.</p>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS and dependencies (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

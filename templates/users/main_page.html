@@ -1,0 +1,204 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+{% block content %}
+<!-- Animated Greeting -->
+<h1 class="text-3xl font-semibold bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text mb-4 animate-bounce">
+    Hello, Bro. {{ user.get_full_name }}, CSC, welcome to St. Joseph Province Portal.
+</h1>
+<div class="container mx-auto my-12 px-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+        <h1 class="text-3xl font-semibold text-gray-800">News Feed</h1>
+        <!-- <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow">
+            Create Post
+        </button> -->
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- News Ticker -->
+        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg shadow-lg col-span-1 md:col-span-2">
+            <div class="border-b border-white p-4 font-semibold text-lg">News Ticker</div>
+            <div class="p-4">
+                {% include "announcement/_news_ticker.html" %}
+                <!-- <marquee behavior="scroll" direction="left" scrollamount="3" class="text-base">
+                    This is a sample news ticker. It can be used to display important updates or announcements.
+                </marquee> -->
+            </div>
+        </div>
+
+
+
+        <!-- Calendar Widget -->
+        <!-- Interactive Calendar Widget -->
+        <div class="bg-gradient-to-b from-gray-100 to-gray-200 rounded-lg shadow-lg overflow-hidden">
+            <div class="p-4 font-semibold text-lg text-center text-gray-700 bg-blue-500 text-white rounded-t-lg flex justify-between items-center">
+                <!-- Previous Button -->
+                <button id="prev-month" class="text-white hover:bg-blue-600 p-2 rounded-lg">&larr;</button>
+                <!-- Displayed Month and Year -->
+                <span id="month-year" class="font-bold text-xl"></span>
+                <!-- Next Button -->
+                <button id="next-month" class="text-white hover:bg-blue-600 p-2 rounded-lg">&rarr;</button>
+            </div>
+
+            <!-- Days of the week -->
+            <div class="p-4 text-gray-800">
+                <div class="grid grid-cols-7 gap-1 text-center text-gray-500 font-medium mb-2">
+                    <div>Sun</div>
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                </div>
+
+                <!-- Calendar days -->
+                <div id="calendar-days" class="grid grid-cols-7 gap-1 text-center">
+                    <!-- Days will be generated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const calendarDays = document.getElementById('calendar-days');
+                const monthYear = document.getElementById('month-year');
+                const prevMonthBtn = document.getElementById('prev-month');
+                const nextMonthBtn = document.getElementById('next-month');
+                let currentDate = new Date();
+
+                // Helper function to update the calendar
+                function updateCalendar(date) {
+                    calendarDays.innerHTML = '';  // Clear previous calendar days
+                    const currentMonth = date.getMonth();
+                    const currentYear = date.getFullYear();
+                    monthYear.textContent = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+                    // Get the first day of the month and number of days in the current month
+                    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+                    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+                    // Fill in empty slots before the first day
+                    for (let i = 0; i < firstDay; i++) {
+                        const emptyCell = document.createElement('div');
+                        calendarDays.appendChild(emptyCell);
+                    }
+
+                    // Generate day cells for each day in the current month
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        const dayCell = document.createElement('div');
+                        dayCell.className = `p-2 rounded-lg hover:bg-blue-100 cursor-pointer transition ease-in-out ${
+                            day === date.getDate() && currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear()
+                                ? 'bg-blue-500 text-white font-bold' : 'bg-white text-gray-800'
+                        }`;
+                        dayCell.textContent = day;
+                        calendarDays.appendChild(dayCell);
+                    }
+                }
+
+                // Event listeners for Previous and Next buttons
+                prevMonthBtn.addEventListener('click', () => {
+                    currentDate.setMonth(currentDate.getMonth() - 1);
+                    updateCalendar(currentDate);
+                });
+
+                nextMonthBtn.addEventListener('click', () => {
+                    currentDate.setMonth(currentDate.getMonth() + 1);
+                    updateCalendar(currentDate);
+                });
+
+                // Initialize calendar with the current date
+                updateCalendar(currentDate);
+            });
+        </script>
+
+
+
+        <!-- Person to Remember (Happy Birthday) -->
+        <div class="bg-gray-50 rounded-lg shadow-lg overflow-hidden">
+            <div class="border-b p-4 font-semibold text-lg bg-gray-200 text-gray-700">Happy Birthday</div>
+            <div class="p-4 space-y-4">
+                {% for user in birthday_users %}
+                <div class="flex items-center space-x-4">
+                    {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="{{ user.get_full_name }}" class="w-14 h-14 rounded-full object-cover border-2 border-blue-500">
+                    {% else %}
+                    <img src="{% static 'users/img/avatar.jpg' %}" alt="No Profile Picture" class="w-14 h-14 rounded-full object-cover border-2 border-blue-500">
+                    {% endif %}
+                    <div>
+                        <h3 class="font-semibold text-lg text-gray-800">{{ user.get_full_name }}</h3>
+                        <p class="text-gray-600">Date of Birth: {{ user.date_of_birth|date:"d F Y" }}</p>
+                        <p class="text-gray-600">
+                            {% if user.age %}
+                                Turns {{ user.age }} today
+                            {% else %}
+                                Age not provided
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-gray-500">No birthdays today.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- First Profession -->
+        <div class="bg-gray-50 rounded-lg shadow-lg overflow-hidden">
+            <div class="border-b p-4 font-semibold text-lg bg-gray-200 text-gray-700">First Profession</div>
+            <div class="p-4 space-y-4">
+                {% for user in first_profession_users %}
+                <div class="flex items-center space-x-4">
+                    {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="{{ user.get_full_name }}" class="w-14 h-14 rounded-full object-cover border-2 border-indigo-500">
+                    {% else %}
+                    <img src="{% static 'users/img/avatar.jpg' %}" alt="No Profile Picture" class="w-14 h-14 rounded-full object-cover border-2 border-indigo-500">
+                    {% endif %}
+                    <div>
+                        <h3 class="font-semibold text-lg text-gray-800">{{ user.get_full_name }}</h3>
+                        <p class="text-gray-600">First Profession: {{ user.first_profession_date|date:"d F Y" }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-gray-500">No first professions today.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+
+
+        <!-- Final Profession -->
+        <div class="bg-gray-50 rounded-lg shadow-lg overflow-hidden">
+            <div class="border-b p-4 font-semibold text-lg bg-gray-200 text-gray-700">Final Profession</div>
+            <div class="p-4 space-y-4">
+                {% for user in final_profession_users %}
+                <div class="flex items-center space-x-4">
+                    {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="{{ user.get_full_name }}" class="w-14 h-14 rounded-full object-cover border-2 border-green-500">
+                    {% else %}
+                    <img src="{% static 'users/img/avatar.jpg' %}" alt="No Profile Picture" class="w-14 h-14 rounded-full object-cover border-2 border-green-500">
+                    {% endif %}
+                    <div>
+                        <h3 class="font-semibold text-lg text-gray-800">{{ user.get_full_name }}</h3>
+                        <p class="text-gray-600">Final Profession: {{ user.final_profession_date|date:"d F Y" }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-gray-500">No final professions today.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const calendarWidget = document.getElementById('calendar-widget');
+        const today = new Date();
+        const options = { weekday: 'short', month: 'short', day: 'numeric' };
+        calendarWidget.textContent = today.toLocaleDateString('en-US', options);
+    });
+</script>
+
+
+{% endblock %}

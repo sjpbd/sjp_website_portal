@@ -1,0 +1,58 @@
+{% load static %}
+
+<!-- {% block title %}Logout Confirmation{% endblock %} -->
+
+{% block content %}
+<div class="logout-confirmation">
+    <h2>Logout Confirmation</h2>
+    <p>Are you sure you want to log out?</p>
+
+    <div class="logout-actions">
+        <a href="{% url 'account_logout' %}" class="btn btn-danger">Yes, Logout</a>
+        <a href="{% url 'account_login' %}" class="btn btn-secondary">Cancel</a>
+    </div>
+</div>
+
+<style>
+    .logout-confirmation {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    .logout-confirmation h2 {
+        margin-bottom: 20px;
+    }
+    .logout-confirmation p {
+        margin-bottom: 30px;
+        color: #555;
+    }
+    .logout-actions {
+        display: flex;
+        justify-content: space-around;
+    }
+    .logout-actions .btn {
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+    .logout-actions .btn-danger {
+        background-color: #ff4d4d;
+        color: white;
+    }
+    .logout-actions .btn-danger:hover {
+        background-color: #e60000;
+    }
+    .logout-actions .btn-secondary {
+        background-color: #ccc;
+        color: black;
+    }
+    .logout-actions .btn-secondary:hover {
+        background-color: #bbb;
+    }
+</style>
+{% endblock %}

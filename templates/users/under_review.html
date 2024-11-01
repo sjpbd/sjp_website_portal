@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Profile Under Review
+            </h2>
+            <div class="mt-8 space-y-6">
+                <div class="rounded-md bg-yellow-50 p-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <!-- You can add an icon here -->
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-yellow-800">
+                                Account Pending Approval
+                            </h3>
+                            <div class="mt-2 text-sm text-yellow-700">
+                                <p>
+                                    Your profile is currently under review by our administrators. Once approved, you will be able to access all features of the platform. This process usually takes 24-48 hours.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center space-y-4">
+                    <p class="text-sm text-gray-600">
+                        You can sign out and try again later, or contact the administrator for more information.
+                    </p>
+                    <div class="space-x-4">
+                        <form method="post" action="{% url 'users:logout' %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="text-indigo-600 hover:text-indigo-500">
+                                Sign Out
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block navbar %}
+<!-- Remove or hide the navigation bar for under review page -->
+{% endblock %}

@@ -1,0 +1,18 @@
+<!-- templates/upcoming_event/event_list.html -->
+{% extends 'users/userbase.html' %}
+
+{% block content %}
+<h1 class="mb-4">Upcoming Events</h1>
+
+<div class="list-group">
+    {% for event in events %}
+    <div class="list-group-item">
+        <h5 class="mb-1">{{ event.title }}</h5>
+        <p class="mb-1">{{ event.description }}</p>
+        <small class="text-muted">Scheduled for: {{ event.event_date|date:"F j, Y, g:i a" }} by {{ event.creator.get_full_name }}</small>
+    </div>
+    {% empty %}
+    <p>No upcoming events found.</p>
+    {% endfor %}
+</div>
+{% endblock %}

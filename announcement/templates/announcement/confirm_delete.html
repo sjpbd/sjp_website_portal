@@ -1,0 +1,14 @@
+{% extends "users/userbase.html" %}
+
+{% block content %}
+<div class="container mx-auto mt-8">
+    <h1 class="text-3xl font-bold mb-4 text-center">Confirm Delete</h1>
+    <p>Are you sure you want to delete the news post titled <strong>{{ news_post.title }}</strong>?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded">Yes, Delete</button>
+        <a href="{% url 'announcement:announcement_feed' %}" class="ml-4">Cancel</a>
+    </form>
+</div>
+{% endblock %}

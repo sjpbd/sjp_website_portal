@@ -1,0 +1,373 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SJP Portal{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Include your slider CSS -->
+     <link rel="stylesheet" href="{% static 'css/styles.min.css' %}">
+     <link rel="stylesheet" href="{% static 'css/payment.css' %}">
+     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <!-- Add favicon link here -->
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon" />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <style>
+        /* Mobile menu animations */
+        #mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        #mobile-menu.show {
+            transform: translateX(0);
+        }
+        
+        .nav-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        
+        .nav-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Desktop dropdown animations */
+        .desktop-dropdown-content {
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .desktop-dropdown:hover .desktop-dropdown-content {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile dropdown animations */
+        .mobile-dropdown-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+
+        .mobile-dropdown-content.show {
+            max-height: 200px;
+        }
+
+        /* Message animations */
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        /* Active link styles */
+    .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: #fbbf24; /* Amber color for active link */
+        font-weight: 600;
+    }
+
+    /* Mobile active link styles */
+    .mobile-link.active {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: #fbbf24;
+        font-weight: 600;
+        border-left: 4px solid #fbbf24;
+    }
+
+    /* Active dropdown item styles */
+    .dropdown-item.active {
+        background-color: #f3f4f6;
+        color: #2563eb;
+        font-weight: 600;
+    }
+
+    </style>
+    
+</head>
+<body class="bg-gray-100">
+
+    <header class="bg-blue-600 text-white h-24 flex items-center">
+        <!-- Navigation -->
+        
+            <div class="container mx-auto px-4">
+                <div class="flex justify-between items-center h-16">
+                    <!-- Logo -->
+                    <a href="#" class="flex items-center">
+                        <img src="{% static 'img/sjp_logo_for_web.png' %}" alt="Logo" class="h-12 w-auto">
+                    </a>
+
+                    <!-- Desktop Navigation -->
+                    <div class="hidden lg:flex items-center space-x-4">
+                        <a href="{% url 'home:home' %}" class="nav-link px-3 py-2 rounded hover:bg-blue-700 transition-colors {% if request.path == home_url %}active{% endif %}">
+                            Home
+                        </a>
+
+                        <!-- About Us Dropdown -->
+                        <div class="desktop-dropdown relative">
+                            <button class="nav-link flex items-center space-x-1 px-3 py-2 rounded hover:bg-blue-700">
+                                <span>About Us</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="desktop-dropdown-content absolute z-50 mt-2 w-64 rounded-md shadow-lg bg-white">
+                                <div class="py-1">
+                                    <a href="{% url 'home:message' %}" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Message from Our Provincial</a>
+                                    <!-- <a href="#" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Our Province</a> -->
+                                    <a href="{% url 'home:detailed_holyones' %}" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Our Holy Ones</a>
+                                    <a href="{% url 'leadership:leadership' leadership_type='province' %}" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Province Administration</a>
+                                    <a href="{% url 'leadership:leadership' leadership_type='general' %}" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">General Administration</a>
+                                    <!-- <a href="#" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Former Provincials</a> -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ministries Dropdown -->
+                        <div class="desktop-dropdown relative">
+                            <button class="nav-link flex items-center space-x-1 px-3 py-2 rounded hover:bg-blue-700">
+                                <span>Ministries</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="desktop-dropdown-content absolute z-50 mt-2 w-48 rounded-md shadow-lg bg-white">
+                                <div class="py-1">
+                                    <a href="{% url 'ministry:ministry_list' %}" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ministry Overview</a>
+                                    <a href="{% url 'institutions:overview' %}" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ministry Details</a>
+                                    <a href="{% url 'map_app:index' %}" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ministries in the map</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Resources Dropdown -->
+                        <div class="desktop-dropdown relative">
+                            <button class="nav-link flex items-center space-x-1 px-3 py-2 rounded hover:bg-blue-700">
+                                <span>Resources</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="desktop-dropdown-content absolute z-50 mt-2 w-48 rounded-md shadow-lg bg-white">
+                                <div class="py-1">
+                                    <a href="{% url 'newsnote:list' %}" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">News Note</a>
+                                    <a href="{% url 'home:chapter_list' %}" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Constitutions</a>
+                                    <!-- <a href="{% url 'home:album_list' %}" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Photo Gallery</a> -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="{% url 'home:members' %}" class="nav-link px-3 py-2 rounded hover:bg-blue-700 transition-colors">Members</a>
+                        <a href="{% url 'home:obituary' %}" class="nav-link px-3 py-2 rounded hover:bg-blue-700 transition-colors">Obituary</a>
+                        <a href="{% url 'home:contact' %}" class="nav-link px-3 py-2 rounded hover:bg-blue-700 transition-colors">Contact Us</a>
+                        <a href="{% url 'payment:initiate' %}" class="nav-link px-3 py-2 rounded hover:bg-blue-700 transition-colors">Donate</a>
+                        <a href="{% url 'users:login' %}" target="_blank" class="nav-link px-3 py-2 rounded hover:bg-blue-700 transition-colors"><span class="material-icons text-xl">login</span></a>
+
+
+                    </div>
+
+                    <!-- Mobile menu button -->
+                    <button id="mobile-menu-button" class="lg:hidden inline-flex items-center justify-center p-2 rounded-md hover:bg-blue-700 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation Menu -->
+            <div id="mobile-menu" class="fixed inset-y-0 left-0 w-64 bg-blue-600 z-40 lg:hidden transform">
+                <div class="h-full flex flex-col">
+                    <div class="flex items-center justify-between p-4 border-b border-blue-500">
+                        <span class="text-xl font-semibold">Menu</span>
+                        <button id="mobile-menu-close" class="p-2 rounded-md hover:bg-blue-700 focus:outline-none">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="flex-1 overflow-y-auto">
+                        <a href="{% url 'home:home' %}" class="mobile-link block px-4 py-3 hover:bg-blue-700">Home</a>
+
+                        <!-- Mobile About Us Dropdown -->
+                        <div class="mobile-dropdown">
+                            <button class="mobile-link w-full flex items-center justify-between px-4 py-3 hover:bg-blue-700">
+                                <span>About Us</span>
+                                <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="mobile-dropdown-content bg-blue-700">
+                                <a href="{% url 'home:message' %}" class="mobile-link block px-8 py-2 hover:bg-blue-800">Message from Our Provincial</a>
+                                <!-- <a href="#" class="mobile-link block px-8 py-2 hover:bg-blue-800">Our Province</a> -->
+                                <a href="{% url 'home:detailed_holyones' %}" class="mobile-link block px-8 py-2 hover:bg-blue-800">Our Holy Ones</a>
+                                <a href="{% url 'leadership:leadership' leadership_type='province' %}" class="mobile-link block px-8 py-2 hover:bg-blue-800">Province Administration</a>
+                                <a href="{% url 'leadership:leadership' leadership_type='general' %}" class="mobile-link block px-8 py-2 hover:bg-blue-800">General Administration</a>
+                                <!-- <a href="#" class="mobile-link block px-8 py-2 hover:bg-blue-800">Former Provincials</a> -->
+                            </div>
+                        </div>
+
+                        <!-- Mobile Ministries Dropdown -->
+                        <div class="mobile-dropdown">
+                            <button class="mobile-link w-full flex items-center justify-between px-4 py-3 hover:bg-blue-700">
+                                <span>Ministries</span>
+                                <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="mobile-dropdown-content bg-blue-700">
+                                <a href="{% url 'ministry:ministry_list' %}" class="mobile-link block px-8 py-2 hover:bg-blue-800">Ministry Overview</a>
+                                <a href="{% url 'institutions:overview' %}" class="mobile-link block px-8 py-2 hover:bg-blue-800">Ministry Details</a>
+                                <a href="{% url 'map_app:index' %}" class="mobile-link block px-8 py-2 hover:bg-blue-800">Ministries in the map</a>
+                            </div>
+                        </div>
+
+                        <!-- Mobile Resources Dropdown -->
+                        <div class="mobile-dropdown">
+                            <button class="mobile-link w-full flex items-center justify-between px-4 py-3 hover:bg-blue-700">
+                                <span>Resources</span>
+                                <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="mobile-dropdown-content bg-blue-700">
+                                <a href="{% url 'newsnote:list' %}" class="mobile-link block px-8 py-2 hover:bg-blue-800">News Note</a>
+                                <a href="{% url 'home:chapter_list' %}" class="mobile-link block px-8 py-2 hover:bg-blue-800">Constitutions</a>
+                                <a href="{% url 'home:album_list' %}" class="mobile-link block px-8 py-2 hover:bg-blue-800">Photo Gallery</a>
+                            </div>
+                        </div>
+
+                        <a href="{% url 'home:members' %}" class="mobile-link block px-4 py-3 hover:bg-blue-700">Members</a>
+                        <a href="{% url 'home:obituary' %}" class="mobile-link block px-4 py-3 hover:bg-blue-700">Obituary</a>
+                        <a href="{% url 'home:contact' %}" class="mobile-link block px-4 py-3 hover:bg-blue-700">Contact Us</a>
+                        <a href="{% url 'payment:initiate' %}" class="mobile-link block px-4 py-3 hover:bg-blue-700">Donate</a>
+                        <a href="{% url 'users:login' %}" class="mobile-link block px-4 py-3 hover:bg-blue-700">
+                            <div class="flex items-center">
+                                <span class="material-icons mr-2">login</span>
+                                <span>Login</span>
+                            </div>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile menu overlay -->
+            <div id="mobile-menu-overlay" class="nav-overlay fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"></div>
+        
+    </header>
+    
+
+
+    <main class="container mx-auto mt-8 p-4">
+        {% if messages %}
+        <div class="fixed top-0 right-0 m-4 z-50">
+            {% for message in messages %}
+                <div class="{% if message.tags == 'success' %}bg-green-100 border-l-4 border-green-500 text-green-700{% elif message.tags == 'error' %}bg-red-100 border-l-4 border-red-500 text-red-700{% else %}bg-blue-100 border-l-4 border-blue-500 text-blue-700{% endif %} p-4 mb-4 rounded-lg shadow-md animate-fadeIn" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    
+
+    <!-- Footer -->
+    <footer class="bg-blue-600 text-white py-4">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm md:text-base">&copy; 2024 All rights reserved. St. Joseph Province, Bangladesh</p>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile menu functionality
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenuClose = document.getElementById('mobile-menu-close');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            const mobileDropdowns = document.querySelectorAll('.mobile-dropdown');
+
+            function toggleMobileMenu() {
+                mobileMenu.classList.toggle('show');
+                mobileMenuOverlay.classList.toggle('show');
+                document.body.classList.toggle('overflow-hidden');
+            }
+
+            mobileMenuButton.addEventListener('click', toggleMobileMenu);
+            mobileMenuClose.addEventListener('click', toggleMobileMenu);
+            mobileMenuOverlay.addEventListener('click', toggleMobileMenu);
+
+            // Mobile dropdowns
+            mobileDropdowns.forEach(dropdown => {
+                const button = dropdown.querySelector('button');
+                const content = dropdown.querySelector('.mobile-dropdown-content');
+                const arrow = button.querySelector('svg');
+
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    content.classList.toggle('show');
+                    arrow.classList.toggle('rotate-180');
+                });
+            });
+
+            // Message dismissal
+            setTimeout(() => {
+                const messages = document.querySelectorAll('.fixed > div[role="alert"]');
+                messages.forEach((message) => {
+                    message.classList.add('fade-out');
+                    setTimeout(() => message.remove(), 500);
+                });
+            }, 3000);
+        });
+    </script>
+    <!-- For the date picker functionality -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        flatpickr(".datepicker", {
+            dateFormat: "Y-m-d", // Customize as per your desired format
+            maxDate: "today" // Restrict selection to past dates
+        });
+    });
+</script>
+
+
+
+
+<!-- Include your slider JavaScript -->
+    <script src="{% static 'js/lazysizes.min.js' %}" async></script>
+    <script src="{% static 'js/slider.js' %}"></script>
+    <script src="{% static 'js/jsfile.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

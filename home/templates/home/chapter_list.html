@@ -1,0 +1,117 @@
+{% extends "mainbase.html" %}
+{% load static %}
+
+{% block title %}Constitutions{% endblock %}
+
+{% block content %}
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #34495e;
+            --background-color: #f8f9fa;
+            --text-color: #333;
+            --accent-color: #e74c3c;
+            --transition: all 0.3s ease;
+        }
+
+        .main-content {
+            padding: 40px;
+            margin-top: 80px;
+            border-radius: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .chapter-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .chapter-list li {
+            margin-bottom: 0;
+        }
+
+        .chapter-list a {
+            text-decoration: none;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .chapter-list a:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            color: var(--primary-color);
+        }
+
+        .chapter-list a:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .chapter-icon {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 10px;
+            }
+
+            .main-content {
+                padding: 30px 20px;
+                margin-top: -40px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .chapter-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Additional styles for the header */
+        #constitutions-header {
+            padding-top: 60px; /* Add sufficient padding to the top of the h1 */
+            text-align: center; /* Center-align the header */
+        }
+    </style>
+</head>
+<body>
+    <div class="mt-14">
+        <h1 id="constitutions-header" class="text-4xl font-semibold">Constitutions</h1>
+    </div>
+
+    
+    <div class="container">
+        <main class="main-content">
+            <ul class="chapter-list">
+                {% for chapter in chapters %}
+                <li>
+                    <a href="{% url 'home:chapter_detail' chapter.pk %}">
+                        <i class="fas fa-book chapter-icon"></i>
+                        {{ chapter.title }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </main>
+    </div>
+    
+</body>
+
+{% endblock %}

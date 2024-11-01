@@ -1,0 +1,300 @@
+{% extends "mainbase.html" %}
+{% load static %}
+
+{% block title %}Holy Ones{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Holy Ones - Encyclopedia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #202122;
+            --secondary-color: #4c4c4c;
+            --text-color: #202122;
+            --background-color: #f8f9fa;
+            --link-color: #090909;
+            --border-color: #a2a9b1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lora', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        .container {
+            /* max-width: 1200px; */
+            margin: 0 auto;
+            padding: 0 5px;
+        }
+
+        header {
+            /* background-color: var(--primary-color); */
+            color: white;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: normal;
+            margin-top: 15px;
+        } 
+
+        .saint-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem 0;
+        }
+
+        .saint-card {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .saint-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .saint-content {
+            padding: 1rem;
+        }
+
+        .saint-name {
+            font-size: 1.2rem;
+            color: var(--link-color);
+            margin-bottom: 0.5rem;
+            font-weight: normal;
+        }
+
+        .saint-designation {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            font-style: italic;
+        }
+
+        .saint-description {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        /* .read-more {
+            color: var(--link-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .read-more:hover {
+            text-decoration: underline;
+        } */
+        .read-more {
+        color: #3498db; /* link color */
+        text-decoration: none;
+        font-size: 0.9rem;
+        background-color: #f0f4f8; /* background color */
+        padding: 10px 15px; /* padding */
+        border-radius: 5px; /* rounded corners */
+        display: inline-block;
+        transition: background-color 0.3s, color 0.3s, transform 0.3s; /* transition effects */
+    }
+
+    .read-more:hover {
+        background-color: #3498db; /* hover background color */
+        color: #ffffff; /* hover text color */
+        transform: translateY(-2px); /* move up on hover */
+    }
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: var(--background-color);
+            margin: 5% auto;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 900px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .close {
+            color: var(--secondary-color);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: var(--text-color);
+        }
+
+        #modalTitle {
+            font-size: 2rem;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            font-weight: normal;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        #modalDesignation {
+            font-size: 1rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        #modalContent {
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        #modalContent p {
+            margin-bottom: 1rem;
+        }
+
+        #modalImage {
+            float: right;
+            max-width: 300px;
+            margin: 0 0 1rem 1rem;
+            border: 1px solid var(--border-color);
+            padding: 3px;
+            background-color: white;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            #modalImage {
+                float: none;
+                max-width: 100%;
+                margin: 0 0 1rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Our Holy Ones</h1>
+    </div>
+
+    <main class="container">
+        <div class="saint-grid">
+            {% for saint in saints %}
+            <div class="saint-card">
+                {% if saint.image %}
+                <img src="{{ saint.image.url }}" alt="{{ saint.name }}" class="saint-image">
+                {% endif %}
+                <div class="saint-content">
+                    <h2 class="saint-name">{{ saint.name }}</h2>
+                    <p class="saint-designation">{{ saint.designation }}</p>
+                    <p class="saint-description">{{ saint.short_description|truncatewords:20 }}</p>
+                    <a href="#" class="read-more" data-saint-id="{{ saint.id }}">Read more...</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <div id="saintModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalDesignation"></p>
+            <img id="modalImage" src="" alt="">
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("saintModal");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalDesignation = document.getElementById("modalDesignation");
+        const modalContent = document.getElementById("modalContent");
+        const modalImage = document.getElementById("modalImage");
+        const closeBtn = document.getElementsByClassName("close")[0];
+
+        document.querySelectorAll('.read-more').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const saintId = this.getAttribute('data-saint-id');
+                openModal();
+                fetchSaintDetails(saintId);
+            });
+        });
+
+        closeBtn.onclick = closeModal;
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        function openModal() {
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden";
+            modalContent.innerHTML = '<div class="loading">Loading...</div>';
+        }
+
+        function closeModal() {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+
+        function fetchSaintDetails(saintId) {
+            fetch(`/api/saint/${saintId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    modalTitle.textContent = data.name;
+                    modalDesignation.textContent = data.designation;
+                    modalImage.src = data.image_url;
+                    modalImage.alt = data.name;
+                    
+                    // Convert the full_content to paragraphs
+                    const paragraphs = data.detail.full_content.split('\n').filter(p => p.trim() !== '');
+                    modalContent.innerHTML = paragraphs.map(p => `<p>${p}</p>`).join('');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    modalContent.innerHTML = '<p>Error loading content. Please try again.</p>';
+                });
+        }
+    </script>
+</body>
+</html>
+{% endblock %}

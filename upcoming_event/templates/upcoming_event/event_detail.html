@@ -1,0 +1,83 @@
+<!-- upcoming_event/templates/upcoming_event/event_detail.html -->
+{% extends 'users/userbase.html' %}
+
+{% block title %}
+    {{ event.title }}
+{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        {% if event %}
+            <div class="bg-white shadow-lg rounded-lg p-6 sm:p-8 lg:p-12 max-w-3xl mx-auto">
+                <!-- Event Title -->
+                <h1 class="text-3xl font-bold text-gray-900 mb-4" style="color: {{ event.color }}">{{ event.title }}</h1>
+                
+                <!-- Event Date and Time -->
+                <p class="text-lg text-gray-700 mb-2">
+                    <strong class="font-semibold">Date:</strong> 
+                    <span class="text-gray-600">{{ event.event_date|date:"F j, Y" }}</span>
+                </p>
+                <p class="text-lg text-gray-700 mb-2">
+                    <strong class="font-semibold">Start Time:</strong> 
+                    <span class="text-gray-600">{{ event.start_time|date:"g:i A" }}</span>
+                </p>
+                <p class="text-lg text-gray-700 mb-2">
+                    <strong class="font-semibold">End Time:</strong> 
+                    <span class="text-gray-600">{{ event.end_time|date:"g:i A" }}</span>
+                </p>
+
+                <!-- Location -->
+                <p class="text-lg text-gray-700 mb-2">
+                    <strong class="font-semibold">Location:</strong> 
+                    <span class="text-gray-600">{{ event.location }}</span>
+                </p>
+
+                <!-- Description -->
+                <p class="text-lg text-gray-700 mb-6">
+                    <strong class="font-semibold">Description:</strong> 
+                    <span class="text-gray-600">{{ event.description }}</span>
+                </p>
+
+                <!-- Event Creator -->
+                <p class="text-lg text-gray-700 mb-6">
+                    <strong class="font-semibold">Created by:</strong> 
+                    <span class="text-gray-600">{{ event.creator.get_full_name }}</span>
+                </p>
+                
+
+                <!-- Reminders -->
+                <div class="mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-3">Reminders</h2>
+                    <ul class="list-disc pl-5 text-gray-700">
+                        {% for reminder in event.reminders.all %}
+                            <li>
+                                <span class="font-semibold">Reminder Time:</span> 
+                                <span class="text-gray-600">{{ reminder.reminder_time|date:"F j, Y, g:i A" }}</span>
+                            </li>
+                        {% empty %}
+                            <li class="text-gray-600">No reminders set for this event.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Back Button -->
+                <div class="flex justify-start">
+                    <a href="{% url 'upcoming_event:calendar' %}" 
+                        class="inline-block bg-blue-600 text-white text-lg font-medium px-5 py-2.5 rounded-md hover:bg-blue-700 transition duration-300 ease-in-out">
+                        Back to Calendar
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <div class="text-center bg-white shadow-lg rounded-lg p-6 max-w-lg mx-auto">
+                <p class="text-xl font-semibold text-gray-800">Event not found.</p>
+                <div class="mt-4">
+                    <a href="{% url 'upcoming_event:calendar' %}" 
+                        class="inline-block bg-blue-600 text-white text-lg font-medium px-5 py-2.5 rounded-md hover:bg-blue-700 transition duration-300 ease-in-out">
+                        Back to Event List
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

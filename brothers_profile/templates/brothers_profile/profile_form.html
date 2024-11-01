@@ -1,0 +1,286 @@
+{% extends 'profile_nav.html' %}
+{% load static %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <!-- Your existing extra CSS -->
+{% endblock %}
+
+{% block extra_js %}
+    {{ block.super }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <!-- Your existing extra JS -->
+    <style>
+        form input, form select, form textarea {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+        }
+        form input:focus, form select:focus, form textarea:focus {
+            outline: none;
+            ring: 2px;
+            ring-color: #3b82f6;
+        }
+        [x-cloak] { display: none !important; }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8" x-data="{ currentStep: 1, profileImage: null, cropper: null }">
+    <h1 class="text-3xl font-bold mb-8 text-center">Profile Information</h1>
+    
+    <form method="post" enctype="multipart/form-data" class="max-w-4xl mx-auto">
+        {% csrf_token %}
+        
+        <!-- Progress bar -->
+        <div class="mb-8">
+            <div class="flex justify-between mb-1">
+                <span class="text-base font-medium text-blue-700 dark:text-white">Progress</span>
+                <span class="text-sm font-medium text-blue-700 dark:text-white" x-text="`Step ${currentStep} of 7`"></span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                <div class="bg-blue-600 h-2.5 rounded-full" :style="`width: ${(currentStep / 7) * 100}%`"></div>
+            </div>
+        </div>
+
+        <!-- Step 1: Profile -->
+        <div x-show="currentStep === 1" x-cloak class="space-y-4">
+            <h2 class="text-2xl font-semibold mb-4">Personal Information</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {% for field in profile_form %}
+                    <div>
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <p class="text-red-500 text-xs italic">{{ field.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="flex justify-end">
+                <button type="button" @click="currentStep++" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Next
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Religious Info -->
+        <div x-show="currentStep === 2" x-cloak class="space-y-4">
+            <h2 class="text-2xl font-semibold mb-4">Religious Information</h2>
+            
+            {% for field in religious_info_form %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <p class="text-red-500 text-xs italic">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <div class="flex justify-between">
+                <button type="button" @click="currentStep--" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+                    Previous
+                </button>
+                <button type="button" @click="currentStep++" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Next
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Academic Record -->
+        <div x-show="currentStep === 3" x-cloak class="space-y-4">
+            <h2 class="text-2xl font-semibold mb-4">Academic Record</h2>
+            
+            <!-- Add fields for AcademicRecord model -->
+            {% for field in academic_record_form %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <p class="text-red-500 text-xs italic">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <div class="flex justify-between">
+                <button type="button" @click="currentStep--" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+                    Previous
+                </button>
+                <button type="button" @click="currentStep++" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Next
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 4: Experience -->
+        <div x-show="currentStep === 4" x-cloak class="space-y-4">
+            <h2 class="text-2xl font-semibold mb-4">Experience</h2>
+            
+            <!-- Add fields for Experience model -->
+            {% for field in experience_form %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <p class="text-red-500 text-xs italic">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <div class="flex justify-between">
+                <button type="button" @click="currentStep--" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+                    Previous
+                </button>
+                <button type="button" @click="currentStep++" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Next
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 5: Publication -->
+        <div x-show="currentStep === 5" x-cloak class="space-y-4">
+            <h2 class="text-2xl font-semibold mb-4">Publications</h2>
+            
+            <!-- Add fields for Publication model -->
+            {% for field in publication_form %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <p class="text-red-500 text-xs italic">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <div class="flex justify-between">
+                <button type="button" @click="currentStep--" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+                    Previous
+                </button>
+                <button type="button" @click="currentStep++" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Next
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 6: Social Links -->
+        <div x-show="currentStep === 6" x-cloak class="space-y-4">
+            <h2 class="text-2xl font-semibold mb-4">Social Links</h2>
+            
+            {% if social_link_form %}
+                <!-- Add fields for SocialLink model -->
+                {% for field in social_link_form %}
+                    <div>
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <p class="text-red-500 text-xs italic">{{ field.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <p class="text-yellow-500">No fields found in the social link form.</p>
+                {% endfor %}
+            {% else %}
+                <p class="text-red-500">Social link form is not available.</p>
+            {% endif %}
+            
+            <div class="flex justify-between">
+                <button type="button" @click="currentStep--" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+                    Previous
+                </button>
+                <button type="button" @click="currentStep++" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Next
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 7: Confirmation & Profile Picture Upload -->
+    <div x-show="currentStep === 7" x-cloak class="space-y-4">
+        <h2 class="text-2xl font-semibold mb-4">Confirmation & Profile Picture</h2>
+        
+        <p class="text-gray-700">Please review all your information before submitting.</p>
+        
+        <!-- Profile Picture Upload -->
+        <div class="space-y-4">
+            <label for="profileImage" class="block text-sm font-medium text-gray-700">Profile Picture</label>
+            <input type="file" name="profile_picture" id="profileImage" @change="handleFileUpload" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+            
+            <div x-show="profileImage" class="mt-4">
+                <img :src="profileImage" class="max-w-xs rounded-lg">
+            </div>
+            
+            <div x-show="profileImage" class="mt-4">
+                <button type="button" @click="cropImage" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    Crop Image
+                </button>
+            </div>
+        </div>
+        
+        <div class="flex justify-between">
+            <button type="button" @click="currentStep--" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+                Previous
+            </button>
+            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                Submit
+            </button>
+        </div>
+    </div>
+</form>
+
+</div>
+
+<script>
+    function handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.profileImage = e.target.result;
+                if (this.cropper) {
+                    this.cropper.destroy();
+                }
+                const image = document.createElement('img');
+                image.src = this.profileImage;
+                document.body.appendChild(image);
+                this.cropper = new Cropper(image, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function cropImage() {
+    if (this.cropper) {
+        const canvas = this.cropper.getCroppedCanvas();
+        canvas.toBlob((blob) => {
+            const formData = new FormData();
+            formData.append('profile_picture', blob, 'profile_picture.jpg');
+            
+            fetch('{% url "brothers_profile:profile_create_view" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+            }).then(response => response.json()).then(data => {
+                if (data.success) {
+                    window.location.href = "{% url 'brothers_profile:profile_display_view' %}"; // Redirect to the profile display page
+                } else {
+                    alert('An error occurred');
+                }
+            });
+        });
+    }
+}
+
+</script>
+
+{% endblock %}

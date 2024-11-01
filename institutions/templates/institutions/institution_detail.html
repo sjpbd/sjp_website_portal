@@ -1,0 +1,90 @@
+{% extends "mainbase.html" %}
+
+{% block title %}{{ institution.name }} - Holy Cross Institutions{% endblock %}
+
+{% block content %}
+<body class="bg-gray-100">
+    <!-- <header class="bg-blue-600 text-white p-4">
+        <h1 class="text-3xl font-bold">{{ institution.name }}</h1>
+    </header> -->
+    <div class="bg-blue-600 text-blue-100 p-4 mt-16">
+        <h1 class="text-3xl font-bold">{{ institution.name }}</h1>
+    </div>
+    
+        <section class="bg-white p-6 rounded-lg shadow-md m-8 mt-4">
+            <h2 class="text-2xl font-semibold mb-4">Institution Details</h2>
+            {% if institution.is_formation_house %}
+                <!-- Formation House Details -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="mb-2"><strong class="font-semibold">Name:</strong> {{ institution.name }}</p>
+                        <p class="mb-2"><strong class="font-semibold">Establishment Year:</strong> {{ institution.establishment_year }}</p>
+                        <p class="mb-2"><strong class="font-semibold">Category:</strong> Formation House</p>
+                    </div>
+                    <div>
+                        <p class="mb-2"><strong class="font-semibold">Number of Formees:</strong> 
+                            {% if institution.number_of_formees %}
+                                {{ institution.number_of_formees }}
+                            {% else %}
+                                Not specified
+                            {% endif %}
+                        </p>
+                        <p class="mb-2"><strong class="font-semibold">Number of Directors:</strong> 
+                            {% if institution.number_of_directors %}
+                                {{ institution.number_of_directors }}
+                            {% else %}
+                                Not specified
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            {% else %}
+                <!-- Regular Institution Details -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="mb-2"><strong class="font-semibold">Category:</strong> {{ institution.category.name }}</p>
+                        <p class="mb-2"><strong class="font-semibold">Establishment Year:</strong> {{ institution.establishment_year }}</p>
+                        <p class="mb-2"><strong class="font-semibold">Ownership:</strong> {{ institution.ownership|default:"Not specified" }}</p>
+                        <p class="mb-2"><strong class="font-semibold">Administration:</strong> {{ institution.administration|default:"Not specified" }}</p>
+                        <p class="mb-2"><strong class="font-semibold">Grades:</strong> {{ institution.grades|default:"Not specified" }}</p>
+                    </div>
+                    <div>
+                        <p class="mb-2"><strong class="font-semibold">Students:</strong> {{ institution.students|default:"Not specified" }}</p>
+                        <p class="mb-2"><strong class="font-semibold">Teachers:</strong> {{ institution.teachers|default:"Not specified" }}</p>
+                        <p class="mb-2"><strong class="font-semibold">Office Staff:</strong> {{ institution.office_staff|default:"Not specified" }}</p>
+                        <p class="mb-2"><strong class="font-semibold">Employees:</strong> {{ institution.employees|default:"Not specified" }}</p>
+                        <p class="mb-2"><strong class="font-semibold">Status:</strong> {{ institution.status|default:"Not specified" }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        </section>
+
+        <section class="bg-white p-6 rounded-lg shadow-md m-8">
+            <h2 class="text-2xl font-semibold mb-4">Short History</h2>
+            <p class="text-gray-700">{{ institution.short_history }}</p>
+        </section>
+
+        <section class="bg-white p-6 rounded-lg shadow-md m-8">
+            <h2 class="text-2xl font-semibold mb-4">Images</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {% for image in institution.images.all %}
+                    <div>
+                        <img src="{{ image.image.url }}" alt="{{ image.caption }}" class="w-full h-48 object-cover rounded">
+                        {% if image.caption %}
+                            <p class="text-center mt-2 text-gray-600">{{ image.caption }}</p>
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <p class="col-span-3 text-center text-gray-700">No images available.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <a href="{% url 'institutions:overview' %}" class="bg-blue-500 text-white p-8 px-4 py-2 rounded hover:bg-blue-600 ml-8 mb-30">Back to Overview</a>
+    
+    <div class="bg-white-800 text-white p-4 mt-8">
+
+    </div>
+    
+</body>
+{% endblock %}

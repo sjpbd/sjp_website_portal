@@ -1,0 +1,27 @@
+{% extends 'mainbase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Support Our Cause</h1>
+    <p>Your generosity helps us make a difference. We greatly appreciate your support!</p>
+    
+    <form id="donationForm" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Proceed to Payment</button>
+    </form>
+    
+    <div class="secure-info">
+        <h2>Secure Donations</h2>
+        <p>Our website is secured with SSL certificates to ensure your personal and financial information is protected. We value your privacy and generosity.</p>
+    </div>
+</div>
+
+<script>
+    document.getElementById('donationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        this.submit();
+    });
+</script>
+{% endblock %}

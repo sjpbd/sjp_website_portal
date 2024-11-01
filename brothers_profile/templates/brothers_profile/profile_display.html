@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Information</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto p-6 bg-white shadow-lg rounded-lg">
+        <h1 class="text-2xl font-bold mb-4">Profile Information</h1>
+
+        <div class="flex items-center mb-4">
+            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="w-24 h-24 rounded-full border-2 border-gray-300 mr-4">
+            <div>
+                <h2 class="text-xl font-semibold">{{ profile.first_name }} {{ profile.last_name }}</h2>
+                <p class="text-gray-600">{{ profile.email }}</p>
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold">Religious Information</h3>
+            <p class="text-gray-700">{{ religious_info.details }}</p>
+        </div>
+
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold">Academic Records</h3>
+            <ul>
+                {% for record in academic_records %}
+                <li class="text-gray-700">{{ record.title }} - {{ record.institution }}</li>
+                {% empty %}
+                <li class="text-gray-600">No academic records available.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold">Experience</h3>
+            <ul>
+                {% for experience in experiences %}
+                <li class="text-gray-700">{{ experience.position }} at {{ experience.company }}</li>
+                {% empty %}
+                <li class="text-gray-600">No experience records available.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold">Publications</h3>
+            <ul>
+                {% for publication in publications %}
+                <li class="text-gray-700">{{ publication.title }} - {{ publication.journal }}</li>
+                {% empty %}
+                <li class="text-gray-600">No publications available.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="text-lg font-semibold">Social Links</h3>
+            <ul>
+                {% for social_link in social_links %}
+                <li class="text-gray-700">
+                    <a href="{{ social_link.url }}" target="_blank">{{ social_link.platform }}</a>
+                </li>
+                {% empty %}
+                <li class="text-gray-600">No social links available.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+</body>
+</html>

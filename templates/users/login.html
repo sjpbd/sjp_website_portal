@@ -1,0 +1,114 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+{% block title %}St. Joseph Province | Login{% endblock %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8">
+    <div class="bg-white p-8 rounded-xl shadow-2xl transition duration-500">
+      <div class="text-center">
+        <img src="{% static 'users/img/logo.png' %}" alt="Logo" class="w-42 mx-auto mb-4">
+        <h2 class="mt-6 text-3xl font-extrabold text-gray-900">Login</h2>
+        <p class="mt-2 text-sm text-gray-600">Welcome back! Please enter your details.</p>
+      </div>
+
+      <!-- Toast Notification -->
+      {% if messages %}
+      <div id="toast" class="fixed bottom-5 right-5 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg transition-opacity duration-300" style="opacity: 0;">
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          var toast = document.getElementById("toast");
+          if (toast) {
+            toast.style.opacity = 1; // Show the toast
+            setTimeout(function() {
+              toast.style.opacity = 0; // Hide after 3 seconds
+            }, 3000);
+          }
+        });
+      </script>
+      {% endif %}
+
+      <form class="mt-8 space-y-6" method="post">
+        {% csrf_token %}
+        <div class="rounded-md shadow-sm -space-y-px">
+          <div class="mb-4">
+            <label for="username" class="block text-gray-700 font-bold mb-2">Username</label>
+            <input type="text" id="username" name="username" 
+                class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                value="{{ form.username.value }}">
+            {% if form.username.errors %}
+              <p class="text-red-500 text-sm mt-1">{{ form.username.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div class="mb-4">
+            <label for="password" class="block text-gray-700 font-bold mb-2">Password</label>
+            <div class="relative flex items-center">
+              <input type="password" id="password" name="password" 
+                    class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    autocomplete="off">
+              <span onclick="togglePassword()" class="absolute right-3 flex items-center cursor-pointer">
+                <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10 2C6.664 2 3.731 4.39 2.01 7.832c-.242.498-.242 1.04 0 1.537C3.732 12.611 6.665 15 10 15c3.336 0 6.269-2.389 7.99-5.631.242-.498.242-1.04 0-1.537C16.268 4.39 13.335 2 10 2zM10 13a3 3 0 110-6 3 3 0 010 6zm0-1.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+                </svg>
+              </span>
+            </div>
+            {% if form.password.errors %}
+              <p class="text-red-500 text-sm mt-1">{{ form.password.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+        </div>
+
+        <div>
+          <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+            Login
+          </button>
+        </div>
+      </form>
+
+      <!-- Links for sign-up and forgot password -->
+      <div class="mt-6">
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-300"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="px-2 bg-white text-gray-500">Or</span>
+          </div>
+        </div>
+        <div class="mt-6 grid grid-cols-2 gap-3">
+          <div>
+            <a href="{% url 'users:signup' %}" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-150 ease-in-out">
+              Sign up
+            </a>
+          </div>
+          <div>
+            <a href="{% url 'users:password_reset' %}" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-150 ease-in-out">
+              Forgot password
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script for toggling password visibility -->
+<script>
+  function togglePassword() {
+    const passwordField = document.getElementById('password');
+    const eyeIcon = document.getElementById('eyeIcon');
+    if (passwordField.type === 'password') {
+      passwordField.type = 'text';
+      eyeIcon.classList.add('text-blue-500');
+    } else {
+      passwordField.type = 'password';
+      eyeIcon.classList.remove('text-blue-500');
+    }
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'mainbase.html' %}
+{% block content %}
+
+<!-- Include Leaflet CSS and JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<script> 
+    let map;
+
+    function initMap() {
+        var locations = {{ locations|safe }};
+        var firstLocation = locations[0];
+
+        // Initialize the map and set its view to the first location's coordinates with a zoom level of 4
+        map = L.map('map').setView([firstLocation.lat, firstLocation.lng], 4);
+
+        // Add OpenStreetMap tiles to the map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Iterate over locations to add markers
+        locations.forEach(function (location) {
+            var marker = L.marker([location.lat, location.lng]).addTo(map)
+                .bindPopup(location.name);
+
+            marker.on('click', function() {
+                marker.openPopup();
+            });
+        });
+    }
+
+    // Call the initMap function to initialize the map
+    window.onload = initMap;
+
+</script>
+
+<div class="pageholder">
+    <div class="titleholder"> 
+        <div class="title"> OpenStreetMap Displaying Markers on the Map </div> 
+    </div>
+
+    <div class="linkholder">
+        <div class="mapholder"> 
+            <!-- Set a height for the map -->
+            <div id="map" style="height: 500px;"></div>
+        </div>
+     </div>
+
+    <div class="linkholder">  
+        <a href="{% url 'map_app:my_home_view' %}"> Go to our homepage</a> 
+    </div>
+</div>
+
+{% endblock %}

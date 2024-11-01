@@ -1,0 +1,137 @@
+<!-- templates/appointments/pdf_template.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ appointment.title }}</title>
+    <style>
+        @page { size: A4 portrait; margin: 2cm; }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #444;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        .header { text-align: center; margin-bottom: 2em; }
+        .header img { max-width: 100%; height: auto; margin-bottom: 1em; }
+        .reference, .date { text-align: right; margin-bottom: 1em; font-size: 0.9em; color: #777; }
+        .ministry-details {
+            margin-bottom: 1.5em;
+            padding: 10px;
+            border-left: 4px solid #007bff;
+            background-color: #f0f8ff;
+        }
+        .content {
+            margin: 2em 0;
+            background-color: #ffffff;
+            padding: 1.5em;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .signature-section { margin-top: 3em; text-align: center; }
+        .signature-image { max-width: 200px; height: auto; margin-bottom: 1em; }
+        .footer {
+            margin-top: 3em;
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+            border-top: 1px solid #ddd;
+            padding-top: 1em;
+        }
+        .appointment-type { text-transform: uppercase; font-weight: bold; margin-bottom: 1em; color: #007bff; }
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5em 0;
+        }
+        .details-table th, .details-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .details-table th { background-color: #f5f5f5; color: #333; }
+        .acknowledgment-section {
+            margin-top: 3em;
+            padding-top: 1em;
+            border-top: 1px dashed #999;
+            background-color: #f7f7f7;
+            padding: 15px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        {% if appointment.header_image %}
+            <img src="{{ appointment.header_image.url }}" alt="Header Image">
+        {% endif %}
+        <h1>{{ appointment.title }}</h1>
+    </div>
+
+    <div class="reference">Reference Number: {{ appointment.reference_number }}</div>
+    <div class="date">Date: {{ appointment.created_date|date:"F d, Y" }}</div>
+
+    <div class="ministry-details">
+        To:<br>
+        <strong>{{ appointment.user.get_full_name }}</strong><br>
+        {{ appointment.previous_ministry }}<br>
+    </div>
+
+    <div class="appointment-type">{{ appointment.get_appointment_type_display }}</div>
+    <div class="salutation">{{ appointment.salutation }},</div>
+
+    <div class="content">
+        <table class="details-table">
+            <tr>
+                <th>Effective Date</th>
+                <td>{{ appointment.effective_date|date:"F d, Y" }}</td>
+            </tr>
+            {% if appointment.end_date %}
+            <tr>
+                <th>End Date</th>
+                <td>{{ appointment.end_date|date:"F d, Y" }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>New Ministry</th>
+                <td>{{ appointment.new_ministry }}</td>
+            </tr>
+            <tr>
+                <th>New Designation</th>
+                <td>{{ appointment.new_designation }}</td>
+            </tr>
+            <tr>
+                <th>Location</th>
+                <td>{{ appointment.ministry_location }}</td>
+            </tr>
+        </table>
+
+        <div class="body-content">{{ appointment.body_text|safe }}</div>
+    </div>
+
+    <div class="signature-section">
+        {% if appointment.signature %}
+            <img src="{{ appointment.signature.url }}" alt="Signature" class="signature-image">
+        {% endif %}
+        <div class="signature-details">
+            <strong>{{ appointment.provincial_name }}</strong><br>
+            {{ appointment.provincial_designation }}
+        </div>
+    </div>
+
+    <div class="footer">{{ appointment.footer_text|linebreaks }}</div>
+
+    {% if appointment.status == 'sent' %}
+    <div class="acknowledgment-section">
+        <h3>Acknowledgment</h3>
+        <p>Please acknowledge receipt of this appointment letter by signing below:</p>
+        <div style="margin-top: 2em;">
+            <div style="width: 200px; border-top: 1px solid #333; margin-top: 3em;">Signature</div>
+            <div style="width: 200px; border-top: 1px solid #333; margin-top: 3em;">Date</div>
+        </div>
+    </div>
+    {% endif %}
+</body>
+</html>

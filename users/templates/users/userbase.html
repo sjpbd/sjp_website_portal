@@ -1,0 +1,424 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SJP Portal{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Add favicon link here -->
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon" />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <style>
+        /* Mobile menu animations */
+        #mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        #mobile-menu.show {
+            transform: translateX(0);
+        }
+        
+        .nav-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        
+        .nav-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Desktop dropdown animations */
+        .desktop-dropdown-content {
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .desktop-dropdown:hover .desktop-dropdown-content {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile dropdown animations */
+        .mobile-dropdown-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+
+        .mobile-dropdown-content.show {
+            max-height: 200px;
+        }
+
+        /* Message animations */
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        /* Active link styles */
+    .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: #fbbf24; /* Amber color for active link */
+        font-weight: 600;
+    }
+
+    /* Mobile active link styles */
+    .mobile-link.active {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: #fbbf24;
+        font-weight: 600;
+        border-left: 4px solid #fbbf24;
+    }
+
+    /* Active dropdown item styles */
+    .dropdown-item.active {
+        background-color: #f3f4f6;
+        color: #2563eb;
+        font-weight: 600;
+    }
+    
+
+    /* Preloader container */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(243, 244, 246, 0.9); /* Light overlay */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.6s ease-in-out;
+        }
+
+        /* Blue gradient rotating spinner */
+        .spinner {
+            width: 80px;
+            height: 80px;
+            border: 8px solid transparent;
+            border-top: 8px solid #4a90e2; /* Soft Blue */
+            border-right: 8px solid #5cacee; /* Sky Blue */
+            border-bottom: 8px solid #6bbcff; /* Light Blue */
+            border-left: 8px solid #357ABD; /* Deep Blue */
+            border-radius: 50%;
+            animation: spin 1.2s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+        }
+
+        /* Smooth Spin Animation */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Fade-out effect */
+        #preloader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Preloader HTML -->
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
+
+    <header class="bg-blue-600 text-white py-4">
+        <!-- Navigation -->
+        <nav class="bg-blue-600 text-white">
+            <div class="container mx-auto px-4">
+                <div class="flex justify-between items-center h-16">
+                    <!-- Logo -->
+                    <a href="{% url 'users:dashboard' %}" class="flex items-center">
+                        <img src="{% static 'users/img/sjp_logo_for_web.png' %}" alt="Logo" class="h-12">
+                    </a>
+
+                    <!-- Desktop Navigation -->
+                    <div class="hidden lg:flex items-center space-x-4">
+                        {% if user.is_authenticated %}
+                            {% url 'announcement:announcement_feed' as announcement_url %}
+                            {% url 'upcoming_event:calendar' as event_url %}
+                            {% url 'users:main_page' as main_url %}
+                            {% url 'users:brothers_contacts' as directory_url %}
+                            {% url 'users:dashboard' as dashboard_url %}
+
+                            <!-- Desktop Dropdown -->
+                            <div class="desktop-dropdown relative">
+                                <button class="nav-link flex items-center space-x-1 px-3 py-2 rounded hover:bg-blue-700 {% if request.path == announcement_url or request.path == event_url %}active{% endif %}">
+                                    <span>Information</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div class="desktop-dropdown-content absolute z-50 mt-2 w-48 rounded-md shadow-lg bg-white">
+                                    <div class="py-1">
+                                        <a href="{{ announcement_url }}" 
+                                        class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 
+                                        {% if request.path == announcement_url %}active{% endif %}">
+                                            Announcements
+                                        </a>
+                                        <a href="{{ event_url }}" 
+                                        class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100
+                                        {% if request.path == event_url %}active{% endif %}">
+                                            Upcoming Events
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <a href="{{ main_url }}" 
+                            class="nav-link px-3 py-2 rounded hover:bg-blue-700 transition-colors
+                            {% if request.path == main_url %}active{% endif %}">
+                                Main
+                            </a>
+                            <a href="{{ directory_url }}" 
+                            class="nav-link px-3 py-2 rounded hover:bg-blue-700 transition-colors
+                            {% if request.path == directory_url %}active{% endif %}">
+                                Directory
+                            </a>
+                            <a href="{{ dashboard_url }}" 
+                            class="nav-link px-3 py-2 rounded hover:bg-blue-700 transition-colors
+                            {% if request.path == dashboard_url %}active{% endif %}">
+                                Dashboard
+                            </a>
+
+                            <form action="{% url 'users:logout' %}" method="post" class="ml-4">
+                                {% csrf_token %}
+                                <button type="submit" class="bg-blue-700 px-4 py-2 rounded hover:bg-blue-800 transition-colors">
+                                    Logout
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+
+                    <!-- Mobile menu button -->
+                    <button id="mobile-menu-button" class="lg:hidden inline-flex items-center justify-center p-2 rounded-md hover:bg-blue-700 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation Menu -->
+            <div id="mobile-menu" class="fixed inset-y-0 left-0 w-64 bg-blue-600 z-40 lg:hidden transform">
+                <div class="h-full flex flex-col">
+                    <div class="flex items-center justify-between p-4 border-b border-blue-500">
+                        <span class="text-xl font-semibold">Menu</span>
+                        <button id="mobile-menu-close" class="p-2 rounded-md hover:bg-blue-700 focus:outline-none">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="flex-1 overflow-y-auto">
+                        {% if user.is_authenticated %}
+                            <!-- Mobile Information Dropdown -->
+                            <div class="mobile-dropdown">
+                                <button class="mobile-link w-full flex items-center justify-between px-4 py-3 hover:bg-blue-700
+                                        {% if request.path == announcement_url or request.path == event_url %}active{% endif %}">
+                                    <span>Information</span>
+                                    <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div class="mobile-dropdown-content bg-blue-700">
+                                    <a href="{{ announcement_url }}" 
+                                    class="mobile-link block px-8 py-2 hover:bg-blue-800
+                                    {% if request.path == announcement_url %}active{% endif %}">
+                                        Announcements
+                                    </a>
+                                    <a href="{{ event_url }}" 
+                                    class="mobile-link block px-8 py-2 hover:bg-blue-800
+                                    {% if request.path == event_url %}active{% endif %}">
+                                        Upcoming Events
+                                    </a>
+                                </div>
+                            </div>
+
+                            <a href="{{ main_url }}" 
+                            class="mobile-link block px-4 py-3 hover:bg-blue-700
+                            {% if request.path == main_url %}active{% endif %}">
+                                Main
+                            </a>
+                            <a href="{{ directory_url }}" 
+                            class="mobile-link block px-4 py-3 hover:bg-blue-700
+                            {% if request.path == directory_url %}active{% endif %}">
+                                Directory
+                            </a>
+                            <a href="{{ dashboard_url }}" 
+                            class="mobile-link block px-4 py-3 hover:bg-blue-700
+                            {% if request.path == dashboard_url %}active{% endif %}">
+                                Dashboard
+                            </a>
+
+                            <div class="border-t border-blue-500 p-4 mt-auto">
+                                <form action="{% url 'users:logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="w-full bg-blue-700 px-4 py-2 rounded hover:bg-blue-800 transition-colors">
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile menu overlay -->
+            <div id="mobile-menu-overlay" class="nav-overlay fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"></div>
+        </nav>
+    </header>
+    
+
+
+    <main class="container mx-auto mt-8 p-4">
+        {% if messages %}
+        <div class="fixed top-0 right-0 m-4 z-50">
+            {% for message in messages %}
+                <div class="{% if message.tags == 'success' %}bg-green-100 border-l-4 border-green-500 text-green-700{% elif message.tags == 'error' %}bg-red-100 border-l-4 border-red-500 text-red-700{% else %}bg-blue-100 border-l-4 border-blue-500 text-blue-700{% endif %} p-4 mb-4 rounded-lg shadow-md animate-fadeIn" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    
+
+    <!-- Footer -->
+    <footer class="bg-blue-600 text-white py-4">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm md:text-base">&copy; 2024 All rights reserved. St. Joseph Province, Bangladesh</p>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile menu functionality
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenuClose = document.getElementById('mobile-menu-close');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            const mobileDropdowns = document.querySelectorAll('.mobile-dropdown');
+
+            function toggleMobileMenu() {
+                mobileMenu.classList.toggle('show');
+                mobileMenuOverlay.classList.toggle('show');
+                document.body.classList.toggle('overflow-hidden');
+            }
+
+            mobileMenuButton.addEventListener('click', toggleMobileMenu);
+            mobileMenuClose.addEventListener('click', toggleMobileMenu);
+            mobileMenuOverlay.addEventListener('click', toggleMobileMenu);
+
+            // Mobile dropdowns
+            mobileDropdowns.forEach(dropdown => {
+                const button = dropdown.querySelector('button');
+                const content = dropdown.querySelector('.mobile-dropdown-content');
+                const arrow = button.querySelector('svg');
+
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    content.classList.toggle('show');
+                    arrow.classList.toggle('rotate-180');
+                });
+            });
+
+            // Message dismissal
+            setTimeout(() => {
+                const messages = document.querySelectorAll('.fixed > div[role="alert"]');
+                messages.forEach((message) => {
+                    message.classList.add('fade-out');
+                    setTimeout(() => message.remove(), 500);
+                });
+            }, 3000);
+        });
+    </script>
+    <!-- For the date picker functionality -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        flatpickr(".datepicker", {
+            dateFormat: "Y-m-d", // Customize as per your desired format
+            maxDate: "today" // Restrict selection to past dates
+        });
+    });
+</script>
+
+<!-- Preloader JavaScript -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const preloader = document.getElementById("preloader");
+
+        // Hide preloader on initial page load
+        window.addEventListener("load", function () {
+            setTimeout(() => {
+                preloader.classList.add("fade-out");
+            }, 300); // Optional delay for smoother effect
+        });
+
+        // Show preloader on link clicks and form submissions
+        const showPreloader = () => preloader.classList.remove("fade-out");
+
+        // Apply to all navigation links
+        document.querySelectorAll("a").forEach(link => {
+            link.addEventListener("click", function (e) {
+                if (link.href && !link.href.startsWith("#")) {
+                    showPreloader();
+                }
+            });
+        });
+
+        // Apply to all form submissions
+        document.querySelectorAll("form").forEach(form => {
+            form.addEventListener("submit", function () {
+                showPreloader();
+            });
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

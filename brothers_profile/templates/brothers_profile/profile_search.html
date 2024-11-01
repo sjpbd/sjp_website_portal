@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Search</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .profile-picture {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        .search-input {
+            transition: all 0.3s ease;
+        }
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.5);
+            border-color: rgba(67, 56, 202, 0.5);
+        }
+        .profile-item {
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .profile-item:hover {
+            background-color: #f3f4f6;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-12">
+        <div class="w-full max-w-lg mx-auto bg-white rounded-lg shadow-lg p-8">
+            <h1 class="text-3xl font-bold mb-6 text-gray-800">Profile Search</h1>
+            <div class="relative mb-6">
+                <input type="text" id="search" class="w-full p-3 border border-gray-300 rounded-lg search-input pl-10" placeholder="Search profiles...">
+                <svg class="absolute left-3 top-3 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M16.5 10.5A6 6 0 1110.5 4.5a6 6 0 016 6z" />
+                </svg>
+            </div>
+            <ul id="results" class="mt-6 space-y-4">
+                <!-- Search results will be injected here -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search');
+            const resultsContainer = document.getElementById('results');
+
+            searchInput.addEventListener('input', function() {
+                const query = searchInput.value;
+                if (query.length > 0) {
+                    fetch(`/brothers_profile/search_profiles/?query=${query}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            resultsContainer.innerHTML = '';
+                            data.forEach(profile => {
+                                if (profile.id) {
+                                    const profileElement = document.createElement('li');
+                                    profileElement.classList.add('profile-item', 'flex', 'items-center', 'p-4', 'border-b', 'border-gray-300', 'rounded-lg');
+                                    
+                                    profileElement.innerHTML = `
+                                        <a href="/brothers_profile/profile/${profile.id}/" class="flex items-center w-full">
+                                            <img src="${profile.profile_picture}" alt="${profile.username}" class="profile-picture mr-4">
+                                            <div>
+                                                <h2 class="text-xl font-semibold text-gray-800">${profile.first_name} ${profile.last_name}</h2>
+                                                <p class="text-gray-600">@${profile.username}</p>
+                                            </div>
+                                        </a>
+                                    `;
+                                    resultsContainer.appendChild(profileElement);
+                                } else {
+                                    console.error('Profile ID is missing:', profile);
+                                }
+                            });
+                        });
+                } else {
+                    resultsContainer.innerHTML = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

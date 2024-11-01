@@ -1,0 +1,83 @@
+{% extends "mainbase.html" %}
+{% load static %}
+
+{% block title %}Message from Provincial{% endblock %}
+
+{% block content %}
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="flex justify-center w-full"> <!-- Flex container for centering -->
+        <div class="bg-white shadow-lg rounded-xl max-w-2xl w-full p-8 border border-gray-200 mt-20 ml-30 mx-auto"> <!-- Centering div -->
+            <div class="text-center mb-6">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Message from the Provincial</h1>
+                <div class="h-1 w-24 bg-blue-500 mx-auto mb-4"></div>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-start mb-6">
+                <div class="w-48 h-48 mb-4 md:mr-6 md:mb-0">
+                    <img 
+                        src="{% static 'img/Bro_Ripon.jpg' %}" 
+                        alt="Bro. Ripon James Gomes, CSC" 
+                        class="w-full h-full object-cover rounded-full shadow-md"
+                    />
+                </div>
+                <div class="prose prose-lg text-gray-700 flex-1">
+                    <p class="mb-4">Dear Brothers and Sisters,</p>
+                    <p class="mb-4">
+                        Welcome to the official website of St. Joseph Province! It is with great joy that I reach out to you through this digital platform. Our journey together as Holy Cross Brothers in Bangladesh has been enriched by your unwavering support, prayers, and commitment to our shared mission.
+                    </p>
+                </div>
+            </div>
+
+            <div class="prose prose-lg text-gray-700 mb-6">
+                <p class="mb-4">
+                    As we continue to serve our community and spread the message of hope, we remain committed to our core values of education, social justice, and spiritual growth. Our province stands as a beacon of compassion, working tirelessly to make a meaningful difference in the lives of those we serve.
+                </p>
+            </div>
+
+            <div class="prose prose-lg text-gray-700 mb-6">
+                <p class="mb-4">
+                    In the realm of education, we have made significant strides. Our schools are not just places of learning but sanctuaries where young minds are nurtured and guided toward a brighter future. We believe in the transformative power of education, and we are committed to providing quality learning opportunities that foster both intellectual growth and spiritual development. As St. André Bessette wisely said, “It is the Lord who is the source of all good. He alone is the light that shines in darkness.” This light inspires us to cultivate a safe and nurturing environment for our students, helping them to become compassionate and responsible leaders of tomorrow.
+                </p>
+            </div>
+
+            <div class="prose prose-lg text-gray-700 mb-6">
+                <p class="mb-4">
+                    Our work extends beyond education into the vital area of rehabilitation. The rehabilitation centers we have established provide support and healing for those struggling with addiction and personal crises. We approach each individual with dignity and respect, recognizing their inherent worth and potential for transformation. By offering counseling, vocational training, and spiritual guidance, we empower individuals to reclaim their lives and reintegrate into society as contributing members. Our commitment to peace and justice is evident in our advocacy for marginalized communities, working tirelessly to address the systemic issues that hinder their well-being. We believe that, as servants of Christ, we are called to be voices for the voiceless and champions of the oppressed.
+                </p>
+            </div>
+
+            <div class="prose prose-lg text-gray-700 mb-6">
+                <p class="mb-4">
+                    Youth formation is another cornerstone of our mission. We invest in the next generation, fostering their growth as leaders and change-makers. Through retreats, workshops, and community service initiatives, we instill in them the values of faith, service, and social responsibility. “To be a brother is to be a servant,” reminds us of our calling to serve others selflessly.
+                </p>
+            </div>
+
+            <div class="prose prose-lg text-gray-700 mb-6">
+                <p class="mb-4">
+                    As we look to the future, I invite each of you to join us in our mission. Your support is invaluable as we strive to extend our reach and deepen our impact in Bangladesh and beyond. Together, we can continue the legacy of Blessed Basil Moreau and St. André Bessette, embodying their spirit of faith, hope, and love.
+                </p>
+            </div>
+
+            <div class="prose prose-lg text-gray-700 mb-6">
+                <p class="mb-4">
+                    In closing, let us remember the words of Blessed Basil Moreau: “Let us strive to establish a community of love, where the beauty of God's grace can flourish.” May we work together to create a world that reflects this love, bringing light to those who walk in darkness.
+
+                </p>
+            </div>
+
+            <div class="prose prose-lg text-gray-700 mb-6">
+                <p class="mb-4">
+                    Thank you for visiting our website and for your continued support. We look forward to sharing our journey with you as we embrace the call to serve and to build a better world for all.
+                </p>
+            </div>
+
+            <div class="mt-6 text-right">
+                <p class="font-semibold">With warm regards,</p>
+                <p class="font-bold text-gray-800">Bro. Ripon James Gomes, CSC</p>
+                <p class="text-sm text-gray-500">Provincial Superior</p>
+                <p class="text-sm text-gray-500">St. Joseph Province, Bangladesh</p>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}

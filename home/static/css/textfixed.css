@@ -1,0 +1,382 @@
+/* General styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+header {
+    position: fixed;
+    height: 60px;
+    top: 0; 
+    padding-top: 10px;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: top 0.3s;
+}
+
+.logo-img {
+    transform: scale(1, 1); /* No zoom animation */
+    animation: none; /* No animation */
+}
+
+#logo {
+    line-height: 60px;
+    margin-left: 25px;
+    cursor: pointer;
+    font-size: 30px;
+    font-weight: bold;
+    color: #00a7ff; /* blue */
+    float: left;
+}
+
+#logo img {
+    width: 250px;
+    height: auto;
+    vertical-align: middle; /* Align the image vertically */
+    filter: brightness(150%);
+}
+
+.sign a {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add a drop shadow */
+    color: #f1f1f1; /* Light gray color */
+}
+
+#logo:hover {
+    color: #eef9ff; /* white */
+}
+
+#logo-s {
+    color: #eef9ff; /* white */
+    margin-left: 5px;
+}
+
+#logo:hover #logo-s {
+    color: #00a7ff; /* blue */
+}
+
+.sign {
+    float: right;
+    line-height: 60px;
+    margin-right: 20px;
+}
+
+.sign a {
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+    font-family: Arial, sans-serif; /* Choose a user-friendly font */
+    font-size: 16px; /* Adjust font size */
+    padding: 10px 15px; /* Add padding for better spacing */
+    border-radius: 4px; /* Rounded corners for a softer look */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.act {
+    border: 2px solid #fff;
+    border-radius: 50px;
+    padding: 6px 15px;
+}
+
+.sign a:hover {
+    color: #00a7ff; /* blue */
+    border-color: #00a7ff; /* blue */
+}
+
+/* Slider styles */
+.slider {
+    position: relative;
+    width: 100%;
+    background: #2c3e50; /* darkblue */
+}
+
+.myslide {
+    height: calc(100vh - 60px);
+    display: none;
+    overflow: hidden;
+    position: relative;
+}
+
+.myslide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+}
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    font-size: 50px;
+    padding: 15px;
+    cursor: pointer;
+    color: #fff;
+    transition: 0.1s;
+    user-select: none;
+}
+
+.prev:hover, .next:hover {
+    color: #00a7ff; /* blue */
+}
+
+.next {
+    right: 0;
+}
+
+/* .dotsbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+.dotsbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px; /* Add padding */
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Box shadow */
+}
+
+/* .dot {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    margin: 0 10px;
+    cursor: pointer;
+} */
+.dot {
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 0; /* Make it square */
+    display: inline-block;
+    transition: background-color 0.6s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+.dot.active {
+    background-color: #717171;
+}
+.dot:hover {
+    transform: scale(1.2); /* Slightly enlarge on hover */
+}
+
+/* .dots-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20px;
+    cursor: pointer;
+} */
+.dots-container {
+    position: absolute;
+    bottom: 20px; /* Adjust position as needed */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 2;
+}
+
+@media screen and (max-width: 800px) {
+    .dots-container {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 20px;
+        margin-top: 0;
+    }
+}
+
+.active, .dot:hover {
+    border-color: #00a7ff; /* blue */
+}
+
+.fade {
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 1.5s;
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+    from {opacity: 0.8}
+    to {opacity: 1}
+}
+
+@keyframes fade {
+    from {opacity: 0.8}
+    to {opacity: 1}
+}
+
+/* Text styles */
+.txt {
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #f6dc66;
+    letter-spacing: 2px;
+    line-height: 1.5;
+    text-align: center;
+    z-index: 1;
+    padding: 10px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    -webkit-animation-name: posi;
+    -webkit-animation-duration: 2s;
+    animation-name: posi;
+    animation-duration: 2s;
+    /* background: rgba(0, 0, 0, 0.5);  */
+    /* backdrop-filter: blur(10px); */
+    padding: 20px; /* Padding around text */
+    border-radius: 10px; /* Rounded corners */
+}
+
+
+.icon-box {
+    position: absolute;
+    top: 10px; /* Adjust this value to position the box */
+    right: 10px; /* Adjust this value to position the box */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    padding: 10px;
+    border-radius: 5px; /* Optional: rounded corners */
+    z-index: 3; /* Ensure it's above the slides */
+}
+
+.icon-box a {
+    color: white; /* Icon color */
+    margin-right: 10px; /* Space between icons */
+    text-decoration: none; /* Remove underline from links */
+}
+
+.icon-box a:hover {
+    color: #ddd; /* Icon hover color */
+}
+
+@media (max-width: 768px) {
+    .txt {
+        line-height: 1.3;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .txt {
+        line-height: 1.4;
+    }
+}
+
+@media (min-width: 1024px) {
+    .txt {
+        line-height: 1.5;
+        text-align: center;
+    }
+}
+
+@media (orientation: portrait) and (max-width: 549px) and (max-height: 812px) {
+    .txt {
+        line-height: 1.2; /* Adjust line-height as needed */
+        font-size: 14px;  /* You can also adjust font size */
+    }
+}
+
+@-webkit-keyframes posi {
+    from {transform: translate(-50%, -150%);}
+    to {transform: translate(-50%, -50%);}
+}
+
+@keyframes posi {
+    from {transform: translate(-50%, -150%);}
+    to {transform: translate(-50%, -50%);}
+}
+
+.txt h1 {
+    color: #ffffff;
+    font-size: 50px;
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.9);
+}
+
+
+.txt h1, .txt p {
+  animation: textEntrance 2s ease-in-out;
+}
+
+
+
+.txt p {
+    font-weight: bold;
+    font-size: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+@media screen and (max-width: 800px) {
+    .txt {
+        left: 50%;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        text-align: center;
+    }
+
+    .txt h1 {
+        font-size: 40px;
+    }
+
+    .txt p {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .txt h1 {
+        font-size: 30px;
+        margin-bottom: 10px;
+    }
+
+    .txt p {
+        font-size: 14px;
+    }
+}
+
+/*Zooming effect for the slider images begins here*/
+.slider-image {
+    transform: scale(1.5, 1.5);
+    -webkit-animation-name: zoomin;
+    -webkit-animation-duration: 40s;
+    animation-name: zoomin;
+    animation-duration: 40s;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+@keyframes posi {
+  from {transform: translate(-50%, -100%); opacity: 0;}
+  to {transform: translate(-50%, -50%); opacity: 1;}
+}
+
+@-webkit-keyframes zoomin {
+    from {transform: scale(1, 1);}
+    to {transform: scale(1.5, 1.5);}
+}
+
+@keyframes zoomin {
+    from {transform: scale(1, 1);}
+    to {transform: scale(1.5, 1.5);}
+}
+
+@media screen and (max-width: 800px) {
+    .myslide {
+        height: 500px;
+    }
+
+    .txt {
+        letter-spacing: 2px;
+    }
+}

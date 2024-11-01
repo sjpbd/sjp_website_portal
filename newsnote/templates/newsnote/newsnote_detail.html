@@ -1,0 +1,225 @@
+{% extends 'mainbase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 mt-14">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8">
+            <a href="{% url 'newsnote:list' %}" 
+               class="text-blue-600 hover:text-blue-800 flex items-center mb-4">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Newsletters
+            </a>
+            <h1 class="text-3xl font-bold mb-2">{{ newsnote.title }}</h1>
+            <div class="flex items-center text-gray-600">
+                <span class="mr-4">Issue: {{ newsnote.issue }}</span>
+                <span>Published: {{ newsnote.published_date|date:"F d, Y" }}</span>
+            </div>
+        </div>
+
+        <!-- PDF Controls with improved page counter -->
+        <div class="mb-4 flex justify-center space-x-4 sticky top-0 bg-gray-100 py-2 z-10">
+            <div class="flex items-center space-x-4">
+                <button id="prev" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors flex items-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                
+                <div class="bg-white px-4 py-2 rounded-lg border border-gray-300">
+                    <span>Page </span>
+                    <span id="page_num" class="font-medium">1</span>
+                    <span> of </span>
+                    <span id="page_count" class="font-medium">-</span>
+                </div>
+
+                <button id="next" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors flex items-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex items-center space-x-2 border-l border-r px-4">
+                <button id="zoomOut" class="p-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+                    </svg>
+                </button>
+                <span id="zoom_level" class="w-16 text-center">100%</span>
+                <button id="zoomIn" class="p-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </button>
+            </div>
+
+            <a href="{{ newsnote.pdf_file.url }}"
+               download
+               class="inline-flex items-center px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download PDF
+            </a>
+        </div>
+
+        <!-- PDF Viewer Container -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div id="pdfViewerContainer" class="relative" style="height: 80vh;">
+                <div id="pdfViewer" class="absolute top-0 left-0 w-full h-full overflow-auto">
+                    <div id="viewer" class="min-h-full flex justify-center p-4"></div>
+                </div>
+                
+                <!-- Loading indicator -->
+                <div id="loading" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                </div>
+
+                <!-- Error message (hidden by default) -->
+                <div id="errorMessage" class="hidden absolute top-0 left-0 w-full h-full bg-white">
+                    <div class="flex flex-col items-center justify-center p-8 text-center">
+                        <p class="text-gray-600 mb-4">Unable to display PDF directly. You can:</p>
+                        <a href="{{ newsnote.pdf_file.url }}" 
+                           target="_blank"
+                           class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors">
+                            Download PDF
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PDF.js Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+<script>
+    // Initialize PDF.js
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+    let pdfDoc = null;
+    let pageNum = 1;
+    let pageRendering = false;
+    let pageNumPending = null;
+    let scale = 1.0;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const viewer = document.getElementById('viewer');
+    viewer.appendChild(canvas);
+
+    function updatePageDisplay() {
+        document.getElementById('page_num').textContent = pageNum;
+        document.getElementById('page_count').textContent = pdfDoc ? pdfDoc.numPages : '-';
+        
+        // Update button states
+        document.getElementById('prev').disabled = pageNum <= 1;
+        document.getElementById('next').disabled = pdfDoc && pageNum >= pdfDoc.numPages;
+        
+        // Visual feedback for disabled buttons
+        document.getElementById('prev').style.opacity = pageNum <= 1 ? '0.5' : '1';
+        document.getElementById('next').style.opacity = (pdfDoc && pageNum >= pdfDoc.numPages) ? '0.5' : '1';
+    }
+
+    function updateZoomDisplay() {
+        document.getElementById('zoom_level').textContent = `${Math.round(scale * 100)}%`;
+    }
+
+    // Render the page
+    function renderPage(num) {
+        pageRendering = true;
+        
+        pdfDoc.getPage(num).then(function(page) {
+            // Adjust scale based on viewer width
+            const viewerWidth = viewer.clientWidth - 32; // subtract padding
+            const viewport = page.getViewport({ scale: 1.0 });
+            const scaleRequired = viewerWidth / viewport.width;
+            
+            if (pageNum === 1) { // Only auto-adjust scale on first page load
+                scale = Math.min(scaleRequired, 1.0);
+            }
+            
+            const finalViewport = page.getViewport({ scale: scale });
+            canvas.height = finalViewport.height;
+            canvas.width = finalViewport.width;
+
+            const renderContext = {
+                canvasContext: ctx,
+                viewport: finalViewport
+            };
+
+            const renderTask = page.render(renderContext);
+
+            renderTask.promise.then(function() {
+                pageRendering = false;
+                if (pageNumPending !== null) {
+                    renderPage(pageNumPending);
+                    pageNumPending = null;
+                }
+                document.getElementById('loading').style.display = 'none';
+                updatePageDisplay();
+                updateZoomDisplay();
+            });
+        });
+    }
+
+    // Queue rendering of the next page
+    function queueRenderPage(num) {
+        if (pageRendering) {
+            pageNumPending = num;
+        } else {
+            renderPage(num);
+        }
+    }
+
+    // Previous page
+    document.getElementById('prev').addEventListener('click', function() {
+        if (pageNum <= 1) return;
+        pageNum--;
+        queueRenderPage(pageNum);
+    });
+
+    // Next page
+    document.getElementById('next').addEventListener('click', function() {
+        if (pageNum >= pdfDoc.numPages) return;
+        pageNum++;
+        queueRenderPage(pageNum);
+    });
+
+    // Zoom controls
+    document.getElementById('zoomIn').addEventListener('click', function() {
+        scale *= 1.2;
+        renderPage(pageNum);
+    });
+
+    document.getElementById('zoomOut').addEventListener('click', function() {
+        scale *= 0.8;
+        renderPage(pageNum);
+    });
+
+    // Handle window resize
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function() {
+            renderPage(pageNum);
+        }, 200);
+    });
+
+    // Load the PDF
+    pdfjsLib.getDocument('{{ newsnote.pdf_file.url }}').promise
+        .then(function(pdfDoc_) {
+            pdfDoc = pdfDoc_;
+            renderPage(pageNum);
+        })
+        .catch(function(error) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('errorMessage').classList.remove('hidden');
+            console.error('Error loading PDF:', error);
+        });
+</script>
+{% endblock %}

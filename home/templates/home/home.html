@@ -1,0 +1,13 @@
+{% extends "mainbase.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    {% include 'home/slideshow.html' %}
+    {% include 'home/about.html' %}
+    {% include 'home/holyones.html' %}
+    {% include 'home/ministry.html' %}
+    {% include 'home/news.html' %}
+    {% include 'home/faq.html' %}
+{% endblock %}

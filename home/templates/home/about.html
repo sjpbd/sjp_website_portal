@@ -1,0 +1,36 @@
+{% load static %}
+
+<!--=============== ABOUT US ===============-->
+<section class="about-section">
+    <div class="container">
+        <div id="about-title" class="sec-title">
+            <h2>{{ about_us.title }}</h2>
+        </div>
+        <div class="row">
+            <!-- Image Column -->
+            <div class="image-column col-lg-6 col-md-12 col-sm-12 order-1">
+                <div class="inner-column">
+                    <img
+                        data-src="{{ about_us.image.url }}" 
+                        src="{{ about_us.image.url }}" 
+                        alt="About Image"
+                        class="about-image image scroll-reveal lazyload"
+                        style="width: 100%; height: auto;" 
+                    />
+                </div>
+            </div>
+
+            <!-- Content Column -->
+            <div class="content-column col-lg-6 col-md-12 col-sm-12 order-2">
+                <div class="inner-column">
+                    <div class="text">
+                        {{ about_us.content|safe }}
+                    </div>
+                    <div class="btn-box">
+                        <a href="{% url 'home:detailed_about' %}" class="theme-btn btn-style-one">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

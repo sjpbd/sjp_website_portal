@@ -1,0 +1,9 @@
+<!-- announcement/templates/announcement/_news_ticker.html -->
+<div class="bg-gray-800 text-white p-4 rounded-lg mb-6">
+    <marquee behavior="scroll" direction="left" class="text-lg">
+        <strong>Latest News:</strong> 
+        {% for news in news_posts %}
+            {{ news.title }} — <span class="font-bold text-yellow-300">{{ news.author.get_full_name }}</span> | 
+        {% endfor %}
+    </marquee>
+</div>
