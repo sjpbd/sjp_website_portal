@@ -158,7 +158,7 @@ TINYMCE_DEFAULT_CONFIG = {
 # Database configuration
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME'),
         'USER': os.getenv('DB_USER'),
         'PASSWORD': os.getenv('DB_PASSWORD'),
@@ -166,6 +166,7 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT', '3306'), 
     }
 }
+# 'ENGINE': 'django.db.backends.mysql',
 
 # DATABASES = {
 #     'default': {

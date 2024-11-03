@@ -1,59 +1,117 @@
-{% load static %}
-<!--=============== OUR MINISTRIES ===============-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-purple-50 min-h-screen">
+    <div class="container mx-auto px-4 py-16">
+        <h1 class="text-5xl font-bold text-center mb-16 text-indigo-800 hover:text-indigo-600 transition-colors duration-300" data-aos="fade-down">
+            Our Ministries
+        </h1>
 
-    <section id="ministry" class="ministry-section scroll-reveal">
-      <div id="ministry-title" class="sec-title">
-          <h2>Our Ministries</h2>
-        </div>
-      <div class="ministry-container scroll-reveal">
-        <div class="mininstry-item">
-          <i class="material-icons">school</i>
-          <h5 class="card-title">School & College</h5>
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- School & College -->
+            <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300" data-aos="fade-up">
+                <div class="bg-blue-500 text-white rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-school text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-center text-gray-800 mb-2">School & College</h3>
+                <div class="w-20 h-1 bg-blue-500 mx-auto mb-4 rounded"></div>
+            </div>
 
-        <div class="mininstry-item">
-          <i class="material-icons">construction</i>
-          <h5 class="card-title">Technical School</h5>
-        </div>
+            <!-- Technical School -->
+            <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                <div class="bg-green-500 text-white rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-tools text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-center text-gray-800 mb-2">Technical School</h3>
+                <div class="w-20 h-1 bg-green-500 mx-auto mb-4 rounded"></div>
+            </div>
 
-        <div class="mininstry-item">
-          <span class="material-icons">local_hospital</span>
-          <h5 class="card-title">Rehabilitation Center</h5>
-        </div>
+            <!-- Rehabilitation Center -->
+            <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+                <div class="bg-red-500 text-white rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-hospital text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-center text-gray-800 mb-2">Rehabilitation Center</h3>
+                <div class="w-20 h-1 bg-red-500 mx-auto mb-4 rounded"></div>
+            </div>
 
-        <div class="mininstry-item">
-          <span class="material-icons">group</span>
-          <h5 class="card-title">Youth Formation</h5>
-        </div>
+            <!-- Youth Formation -->
+            <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300" data-aos="fade-up">
+                <div class="bg-yellow-500 text-white rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-users text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-center text-gray-800 mb-2">Youth Formation</h3>
+                <div class="w-20 h-1 bg-yellow-500 mx-auto mb-4 rounded"></div>
+            </div>
 
-        <div class="mininstry-item">
-          <span class="material-icons">self_improvement</span>
-          <h5 class="card-title">Ashram and Retreat Center</h5>
-        </div>
+            <!-- Ashram and Retreat Center -->
+            <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                <div class="bg-purple-500 text-white rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-pray text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-center text-gray-800 mb-2">Ashram and Retreat Center</h3>
+                <div class="w-20 h-1 bg-purple-500 mx-auto mb-4 rounded"></div>
+            </div>
 
-        <div class="mininstry-item">
-          <span class="material-icons white-icon">hotel</span>
-          <h5 class="card-title">Hostel</h5>
-        </div>
+            <!-- Hostel -->
+            <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+                <div class="bg-pink-500 text-white rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-hotel text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-center text-gray-800 mb-2">Hostel</h3>
+                <div class="w-20 h-1 bg-pink-500 mx-auto mb-4 rounded"></div>
+            </div>
 
-        <div class="mininstry-item">
-          <span class="material-symbols-outlined">local_library</span>
-          <h5 class="card-title">Literacy School</h5>
-        </div>
+            <!-- Literacy School -->
+            <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300" data-aos="fade-up">
+                <div class="bg-indigo-500 text-white rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-book-reader text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-center text-gray-800 mb-2">Literacy School</h3>
+                <div class="w-20 h-1 bg-indigo-500 mx-auto mb-4 rounded"></div>
+            </div>
 
-        <div class="mininstry-item">
-          <span class="material-icons">emoji_people</span>
-          <h5 class="card-title">Teaching in Major Seminary</h5>
-        </div>
+            <!-- Teaching in Major Seminary -->
+            <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                <div class="bg-teal-500 text-white rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-chalkboard-teacher text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-center text-gray-800 mb-2">Teaching in Major Seminary</h3>
+                <div class="w-20 h-1 bg-teal-500 mx-auto mb-4 rounded"></div>
+            </div>
 
-        <div class="mininstry-item">
-          <span class="material-symbols-outlined">menu_book</span>
-          <h5 class="card-title">Publications</h5>
-        </div>
+            <!-- Publications -->
+            <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+                <div class="bg-orange-500 text-white rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-book text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-center text-gray-800 mb-2">Publications</h3>
+                <div class="w-20 h-1 bg-orange-500 mx-auto mb-4 rounded"></div>
+            </div>
 
-        <div class="mininstry-item">
-          <span class="material-symbols-outlined"> partner_exchange </span>
-          <h5 class="card-title">Guidance & Councelling</h5>
+            <!-- Guidance & Counselling -->
+            <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+                <div class="bg-cyan-500 text-white rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-hands-helping text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-center text-gray-800 mb-2">Guidance & Counselling</h3>
+                <div class="w-20 h-1 bg-cyan-500 mx-auto mb-4 rounded"></div>
+            </div>
         </div>
-      </div>
-    </section>
+    </div>
+
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+    </script>
+</body>
+</html>

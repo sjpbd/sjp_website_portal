@@ -4,7 +4,8 @@ from django.contrib import admin
 from django.db import models
 from django.utils.html import format_html
 from tinymce.widgets import TinyMCE
-from .models import About, Slide, DetailedAbout, Saint, SaintDetail, Member, NewsItem, FAQ, Obituary
+from .models import About, Slide, DetailedAbout, Saint, SaintDetail, Member, NewsItem, FAQ, Obituary, GlobalSettings
+
 
 @admin.register(About)
 class AboutUsAdmin(admin.ModelAdmin):
@@ -79,12 +80,34 @@ class SaintDetailAdmin(admin.ModelAdmin):
 
 
 
+# @admin.register(Member)
+# class MemberAdmin(admin.ModelAdmin):
+#     list_display = ('name', 'order')
+#     list_editable = ('order',)
+#     search_fields = ('name',)
+
+
+@admin.register(GlobalSettings)
+class GlobalSettingsAdmin(admin.ModelAdmin):
+    list_display = ('name_prefix', 'name_suffix', 'items_per_page')
+    
+    def has_add_permission(self, request):
+        # Prevent creating multiple instances
+        return not GlobalSettings.objects.exists()
+
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ('name', 'order')
+    list_display = ('image_preview', 'full_name', 'first_name', 'middle_name', 'last_name', 'order')
     list_editable = ('order',)
-    search_fields = ('name',)
-
+    search_fields = ('first_name', 'middle_name', 'last_name')
+    list_filter = ('created_at', 'updated_at')
+    ordering = ('order', 'first_name', 'last_name')
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-height: 50px;"/>', obj.image.url)
+        return "No Image"
+    image_preview.short_description = 'Image Preview'
 
 
 

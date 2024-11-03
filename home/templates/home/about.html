@@ -1,36 +1,88 @@
 {% load static %}
-
 <!--=============== ABOUT US ===============-->
-<section class="about-section">
-    <div class="container">
-        <div id="about-title" class="sec-title">
-            <h2>{{ about_us.title }}</h2>
+<section class="relative py-16 md:py-24 overflow-hidden bg-gradient-to-b from-white to-gray-50">
+    <!-- Background decoration -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-200 rounded-full"></div>
+        <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-blue-100 rounded-full"></div>
+    </div>
+
+    <div class="container mx-auto px-4 md:px-6 lg:px-8 max-w-7xl">
+        <!-- Section Title -->
+        <div class="text-center mb-12 md:mb-16">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 relative inline-block">
+                {{ about_us.title }}
+                <div class="absolute -bottom-2 left-0 w-full h-1 bg-blue-600 opacity-75 rounded"></div>
+            </h2>
         </div>
-        <div class="row">
+
+        <!-- Content Container -->
+        <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
             <!-- Image Column -->
-            <div class="image-column col-lg-6 col-md-12 col-sm-12 order-1">
-                <div class="inner-column">
+            <div class="w-full lg:w-1/2 relative group">
+                <!-- Image container with animation -->
+                <div class="relative rounded-2xl overflow-hidden shadow-xl transition-transform duration-500 hover:scale-[1.02]">
+                    <!-- Main image -->
                     <img
-                        data-src="{{ about_us.image.url }}" 
-                        src="{{ about_us.image.url }}" 
+                        data-src="{{ about_us.image.url }}"
+                        src="{{ about_us.image.url }}"
                         alt="About Image"
-                        class="about-image image scroll-reveal lazyload"
-                        style="width: 100%; height: auto;" 
+                        class="w-full h-auto object-cover rounded-2xl transform transition-transform duration-700 hover:scale-105"
+                        loading="lazy"
                     />
+                    <!-- Overlay gradient -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
+                
+                <!-- Decorative elements -->
+                <div class="absolute -z-10 -top-4 -left-4 w-full h-full bg-blue-200 rounded-2xl"></div>
+                <div class="absolute -z-10 -bottom-4 -right-4 w-full h-full bg-blue-100 rounded-2xl"></div>
             </div>
 
             <!-- Content Column -->
-            <div class="content-column col-lg-6 col-md-12 col-sm-12 order-2">
-                <div class="inner-column">
-                    <div class="text">
-                        {{ about_us.content|safe }}
+            <div class="w-full lg:w-1/2">
+                <div class="space-y-6">
+                    <!-- Text content with styled typography -->
+                    <div class="prose prose-lg max-w-none">
+                        <div class="text-gray-700 leading-relaxed space-y-4">
+                            {{ about_us.content|safe }}
+                        </div>
                     </div>
-                    <div class="btn-box">
-                        <a href="{% url 'home:detailed_about' %}" class="theme-btn btn-style-one">Read More</a>
+
+                    <!-- Call to action button -->
+                    <div class="pt-6">
+                        <a 
+                            href="{% url 'home:detailed_about' %}"
+                            class="inline-flex items-center px-8 py-3 text-lg font-semibold text-white bg-blue-600 rounded-xl shadow-lg hover:bg-blue-700 transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                        >
+                            Read More
+                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<style>
+    /* Optional: Add custom styles for the content if needed */
+    .prose img {
+        @apply rounded-xl shadow-lg;
+    }
+    
+    .prose h2 {
+        @apply text-2xl font-bold text-gray-900 mb-4;
+    }
+    
+    .prose p {
+        @apply mb-4 text-gray-700;
+    }
+    
+    /* Ensure proper spacing in lists */
+    .prose ul, .prose ol {
+        @apply space-y-2 my-4;
+    }
+</style>

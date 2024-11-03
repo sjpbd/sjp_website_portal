@@ -104,61 +104,10 @@
     }
     
 
-    /* Preloader container */
-        #preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(243, 244, 246, 0.9); /* Light overlay */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            opacity: 1;
-            transition: opacity 0.6s ease-in-out;
-        }
-
-        /* Blue gradient rotating spinner */
-        .spinner {
-            width: 80px;
-            height: 80px;
-            border: 8px solid transparent;
-            border-top: 8px solid #4a90e2; /* Soft Blue */
-            border-right: 8px solid #5cacee; /* Sky Blue */
-            border-bottom: 8px solid #6bbcff; /* Light Blue */
-            border-left: 8px solid #357ABD; /* Deep Blue */
-            border-radius: 50%;
-            animation: spin 1.2s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
-        }
-
-        /* Smooth Spin Animation */
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Fade-out effect */
-        #preloader.fade-out {
-            opacity: 0;
-            pointer-events: none;
-        }
-
 
     </style>
 </head>
 <body class="bg-gray-100">
-
-    <!-- Preloader HTML -->
-    <div id="preloader">
-        <div class="spinner"></div>
-    </div>
-
 
     <header class="bg-blue-600 text-white py-4">
         <!-- Navigation -->
@@ -384,41 +333,6 @@
         });
     });
 </script>
-
-<!-- Preloader JavaScript -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const preloader = document.getElementById("preloader");
-
-        // Hide preloader on initial page load
-        window.addEventListener("load", function () {
-            setTimeout(() => {
-                preloader.classList.add("fade-out");
-            }, 300); // Optional delay for smoother effect
-        });
-
-        // Show preloader on link clicks and form submissions
-        const showPreloader = () => preloader.classList.remove("fade-out");
-
-        // Apply to all navigation links
-        document.querySelectorAll("a").forEach(link => {
-            link.addEventListener("click", function (e) {
-                if (link.href && !link.href.startsWith("#")) {
-                    showPreloader();
-                }
-            });
-        });
-
-        // Apply to all form submissions
-        document.querySelectorAll("form").forEach(form => {
-            form.addEventListener("submit", function () {
-                showPreloader();
-            });
-        });
-    });
-</script>
-
-
 
 </body>
 </html>
