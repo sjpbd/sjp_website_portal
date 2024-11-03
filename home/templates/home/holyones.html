@@ -1,100 +1,169 @@
 {% load static %}
 <!--=============== Holy Ones ===============-->
-    <style>
-        .holy-ones-container.card {
-            text-align: center;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: #3e5a8f;
-            border: 2px solid #3e5a8f;
-            transition: transform 0.2s ease-in-out;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .holy-ones-section .holy-ones-img {
-          width: 200px;
-          height: 200px;
-          object-fit: cover;
-          border-radius: 50%;
-          margin: 0 auto 15px;
-          border: 2px solid black;
-          transition: transform 0.3s, border-color 0.3s;
-        }
-    </style>
-    <section id="holy-ones" class="holy-ones-section scroll-reveal">
-      <div class="holy-ones-container card scroll-reveal">
-          
-          <div id="holy-ones-title" class="sec-title">
-              <h2>Our Holy Ones</h2>
-          </div>
-          <div class="holy-ones-container">
-              <div class="holy-ones-card blessed-moreau">
-                  <img 
-                      data-src="{% static 'img/Fr.Moreau.jpg' %}"
-                      src="{% static 'img/Fr.Moreau.jpg' %}" 
-                      alt="Blessed Basile Moreau"
-                      class="holy-ones-img image scroll-reveal lazyload"
-                  />
-                  <div class="holy-ones-details">
-                      <h3 class="holy-ones-name">Blessed Basile Moreau</h3>
-                      <p class="holy-ones-subtitle">
-                          Founder of the Congregation of Holy Cross
-                      </p>
-                  </div>
-                  <a href="{% url 'home:detailed_holyones' %}" class="read-more-btn">Read More</a>
-              </div>
-  
-              <!-- Add more Holy Ones cards as needed -->
-              <div class="holy-ones-card rev-dujarie">
-                  <img
-                      data-src="{% static 'img/Fr.Dujarie.jpg' %}"
-                      src="{% static 'img/Fr.Dujarie.jpg' %}" 
-                      alt="Rev. Jacques Dujarié"
-                      class="holy-ones-img image scroll-reveal lazyload"
-                  />
-                  <div class="holy-ones-details">
-                      <h3 class="holy-ones-name">Rev. Jacques Dujarié</h3>
-                      <p class="holy-ones-subtitle">
-                          Founder of the then Brothers of St. Joseph (Now Holy Cross Brothers)
-                      </p>
-                  </div>
-                  <a href="{% url 'home:detailed_holyones' %}" class="read-more-btn">Read More</a>
-              </div>
-  
-              <!-- Add more Holy Ones cards as needed -->
-              <div class="holy-ones-card st-andre">
-                  <img
-                      data-src="{% static 'img/Br.Andre.png' %}"
-                      src="{% static 'img/Br.Andre.png' %}" 
-                      alt="St. André Bessette"
-                      class="holy-ones-img image scroll-reveal lazyload"
-                  />
-                  <div class="holy-ones-details">
-                      <h3 class="holy-ones-name">St. André Bessette</h3>
-                      <p class="holy-ones-subtitle">
-                          Miracle Worker & Healer And 1st Saint from Holy Cross
-                      </p>
-                  </div>
-                  <a href="{% url 'home:detailed_holyones' %}" class="read-more-btn">Read More</a>
-              </div>
-  
-              <!-- Add more Holy Ones cards as needed -->
-              <div class="holy-ones-card sg-flavian">
-                  <img
-                      data-src="{% static 'img/Br.Flavian.jpg' %}"
-                      src="{% static 'img/Br.Flavian.jpg' %}" 
-                      alt="S.G Flavian Laplante"
-                      class="holy-ones-img image scroll-reveal lazyload"
-                  />
-                  <div class="holy-ones-details">
-                      <h3 class="holy-ones-name">S.G Flavian Laplante</h3>
-                      <p class="holy-ones-subtitle">
-                          Friend of fishermen & Founder of Mariam Ashram
-                      </p>
-                  </div>
-                  <a href="{% url 'home:detailed_holyones' %}" class="read-more-btn">Read More</a>
-              </div>
-          </div>
-      </div>
-  </section>
+<section class="relative py-16 md:py-24 bg-gradient-to-br from-blue-50 via-white to-indigo-50 overflow-hidden">
+    <!-- Decorative background elements -->
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-0 left-0 w-64 h-64 bg-blue-100/50 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-indigo-100/50 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2"></div>
+    </div>
 
- 
+    <div class="container mx-auto px-4 md:px-6 relative z-10">
+        <!-- Section Title -->
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Our Holy Ones
+            </h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Blessed Moreau Card -->
+            <div class="group">
+                <div class="relative bg-white rounded-2xl p-6 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
+                    <!-- Image Container -->
+                    <div class="relative mb-6">
+                        <div class="w-48 h-48 mx-auto relative">
+                            <img 
+                                data-src="{% static 'img/Fr.Moreau.jpg' %}"
+                                src="{% static 'img/Fr.Moreau.jpg' %}" 
+                                alt="Blessed Basile Moreau"
+                                class="w-full h-full object-cover rounded-full ring-4 ring-blue-100 group-hover:ring-blue-300 transition-all duration-300"
+                                loading="lazy"
+                            />
+                            <!-- Decorative circle -->
+                            <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                            Blessed Basile Moreau
+                        </h3>
+                        <p class="text-gray-600 mb-6">
+                            Founder of the Congregation of Holy Cross
+                        </p>
+                        <a 
+                            href="{% url 'home:detailed_holyones' %}" 
+                            class="inline-flex items-center justify-center px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                        >
+                            Read More
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rev. Jacques Dujarié Card -->
+            <div class="group">
+                <div class="relative bg-white rounded-2xl p-6 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
+                    <div class="relative mb-6">
+                        <div class="w-48 h-48 mx-auto relative">
+                            <img 
+                                data-src="{% static 'img/Fr.Dujarie.jpg' %}"
+                                src="{% static 'img/Fr.Dujarie.jpg' %}" 
+                                alt="Rev. Jacques Dujarié"
+                                class="w-full h-full object-cover rounded-full ring-4 ring-blue-100 group-hover:ring-blue-300 transition-all duration-300"
+                                loading="lazy"
+                            />
+                            <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                            Rev. Jacques Dujarié
+                        </h3>
+                        <p class="text-gray-600 mb-6">
+                            Founder of the then Brothers of St. Joseph
+                        </p>
+                        <a 
+                            href="{% url 'home:detailed_holyones' %}" 
+                            class="inline-flex items-center justify-center px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                        >
+                            Read More
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- St. André Bessette Card -->
+            <div class="group">
+                <div class="relative bg-white rounded-2xl p-6 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
+                    <div class="relative mb-6">
+                        <div class="w-48 h-48 mx-auto relative">
+                            <img 
+                                data-src="{% static 'img/Br.Andre.png' %}"
+                                src="{% static 'img/Br.Andre.png' %}" 
+                                alt="St. André Bessette"
+                                class="w-full h-full object-cover rounded-full ring-4 ring-blue-100 group-hover:ring-blue-300 transition-all duration-300"
+                                loading="lazy"
+                            />
+                            <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                            St. André Bessette
+                        </h3>
+                        <p class="text-gray-600 mb-6">
+                            Miracle Worker & Healer And 1st Saint from Holy Cross
+                        </p>
+                        <a 
+                            href="{% url 'home:detailed_holyones' %}" 
+                            class="inline-flex items-center justify-center px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                        >
+                            Read More
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- S.G Flavian Laplante Card -->
+            <div class="group">
+                <div class="relative bg-white rounded-2xl p-6 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
+                    <div class="relative mb-6">
+                        <div class="w-48 h-48 mx-auto relative">
+                            <img 
+                                data-src="{% static 'img/Br.Flavian.jpg' %}"
+                                src="{% static 'img/Br.Flavian.jpg' %}" 
+                                alt="S.G Flavian Laplante"
+                                class="w-full h-full object-cover rounded-full ring-4 ring-blue-100 group-hover:ring-blue-300 transition-all duration-300"
+                                loading="lazy"
+                            />
+                            <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                            S.G Flavian Laplante
+                        </h3>
+                        <p class="text-gray-600 mb-6">
+                            Friend of fishermen & Founder of Mariam Ashram
+                        </p>
+                        <a 
+                            href="{% url 'home:detailed_holyones' %}" 
+                            class="inline-flex items-center justify-center px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                        >
+                            Read More
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

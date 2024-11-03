@@ -1,10 +1,12 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Slide, About, DetailedAbout, Saint, Member, NewsItem, FAQ, Obituary, TeamMember
+from .models import Slide, About, DetailedAbout, Saint, Member, NewsItem, FAQ, Obituary, TeamMember,GlobalSettings
 from django.http import JsonResponse
 from newsnote.models import NewsNote
-from django.core.paginator import Paginator
 from django.views.decorators.http import require_GET
 from django.urls import path
+from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 def message(request):
     return render(request, 'home/message.html')
@@ -33,9 +35,59 @@ def slider(request):
     slides = Slide.objects.all()
     return render(request, 'home/slider.html', {'slides': slides})
 
+
+
 def members(request):
+    # Get global settings
+    settings = GlobalSettings.objects.first()
+    items_per_page = settings.items_per_page if settings else 20
+    
+    # Get the selected letter and page number from query parameters
+    selected_letter = request.GET.get('letter', 'all')
+    page = request.GET.get('page', 1)
+    
+    # Base queryset
     members_list = Member.objects.all()
-    return render(request, 'home/members.html', {'members': members_list})
+    
+    # Get all unique first letters from member names (considering all name parts)
+    all_members = members_list
+    available_letters = set()
+    for member in all_members:
+        available_letters.add(member.first_name[0].upper())
+        if member.middle_name:
+            available_letters.add(member.middle_name[0].upper())
+        available_letters.add(member.last_name[0].upper())
+    available_letters = sorted(available_letters)
+    
+    # Filter members based on selected letter
+    if selected_letter.lower() != 'all':
+        members_list = members_list.filter(
+            Q(first_name__istartswith=selected_letter) |
+            Q(middle_name__istartswith=selected_letter) |
+            Q(last_name__istartswith=selected_letter)
+        )
+    
+    # Order the results
+    members_list = members_list.order_by('order', 'first_name', 'last_name')
+    
+    # Paginate the results
+    paginator = Paginator(members_list, items_per_page)
+    try:
+        members_page = paginator.page(page)
+    except PageNotAnInteger:
+        members_page = paginator.page(1)
+    except EmptyPage:
+        members_page = paginator.page(paginator.num_pages)
+    
+    context = {
+        'members': members_page,
+        'selected_letter': selected_letter,
+        'available_letters': available_letters,
+        'settings': settings,
+        'total_members': members_list.count(),
+    }
+    
+    return render(request, 'home/members.html', context)
 
 def obituary_view(request):
     obituaries = Obituary.objects.all().order_by('death_date')

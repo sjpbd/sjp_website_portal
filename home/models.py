@@ -3,7 +3,8 @@
 from django.db import models
 from django.utils.text import slugify
 from tinymce.models import HTMLField
-
+from django.core.paginator import Paginator
+from django.utils import timezone
 
 
 class Slide(models.Model):
@@ -65,14 +66,63 @@ class SaintDetail(models.Model):
 
 
 
-class Member(models.Model):
-    name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='members/')
-    order = models.IntegerField(default=0)
+# class Member(models.Model):
+#     name = models.CharField(max_length=100)
+#     image = models.ImageField(upload_to='members/')
+#     order = models.IntegerField(default=0)
+
+#     def __str__(self):
+#         return self.name
+
+
+
+class GlobalSettings(models.Model):
+    name_prefix = models.CharField(max_length=10, default="Br.", help_text="e.g., Br., Fr., Sr.")
+    name_suffix = models.CharField(max_length=10, default="CSC", help_text="e.g., CSC")
+    items_per_page = models.IntegerField(default=20, help_text="Number of members to show per page")
+
+    class Meta:
+        verbose_name = "Global Setting"
+        verbose_name_plural = "Global Settings"
 
     def __str__(self):
-        return self.name
+        return f"Global Settings (Prefix: {self.name_prefix}, Suffix: {self.name_suffix})"
 
+    def save(self, *args, **kwargs):
+        if not self.pk and GlobalSettings.objects.exists():
+            return  # Ensure only one instance exists
+        return super(GlobalSettings, self).save(*args, **kwargs)
+
+class Member(models.Model):
+    first_name = models.CharField(max_length=50)
+    middle_name = models.CharField(max_length=50, blank=True, null=True)
+    last_name = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='members/')
+    order = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    class Meta:
+        ordering = ['order', 'first_name', 'last_name']
+        
+    @property
+    def full_name(self):
+        # Get global settings
+        settings = GlobalSettings.objects.first()
+        prefix = f"{settings.name_prefix} " if settings else "Br. "
+        suffix = f" {settings.name_suffix}" if settings else " CSC"
+        
+        # Build full name
+        name_parts = [self.first_name]
+        if self.middle_name:
+            name_parts.append(self.middle_name)
+        name_parts.append(self.last_name)
+        
+        return f"{prefix}{' '.join(name_parts)}{suffix}"
+
+    def __str__(self):
+        return self.full_name
 
 
 
